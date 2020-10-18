@@ -18,11 +18,6 @@ void BigInteger::free()
 	mDigits = "0";
 }
 
-char BigInteger::add(char c1, char c2, bool& isRemembered)
-{
-	return '0';
-}
-
 BigInteger::BigInteger(std::string binary)
 {
 	bool isIncorrectFormat = false;

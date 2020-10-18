@@ -11,7 +11,6 @@ class BigInteger {
 private:
     std::string mDigits;
     void free();
-    char add(char c1, char c2, bool& isRemembered);
 public:
     BigInteger(std::string binary);
     ~BigInteger();
