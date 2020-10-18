@@ -26,6 +26,5 @@ char add(char c1, char c2, bool& isRemembered)
 		isRemembered = isNeedRemember;
 	}
 
-	//printf("a=%c; b=%c, res=%c; true/false=%d\n", c1, c2, res, isRemembered);
 	return res;
 }
