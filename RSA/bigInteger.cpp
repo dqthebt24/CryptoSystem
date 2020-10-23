@@ -8,7 +8,7 @@
 
 #include <iostream>
 #include <string>
-#include "BigInteger.h"
+#include "biginteger.h"
 #include "calculator.h"
 
 using namespace std;
@@ -186,7 +186,7 @@ BigInteger BigInteger::operator<<(const int n) const
 
 BigInteger BigInteger::operator>>(const int n) const 
 {
-	if( n > 0) {
+	if (n > 0) {
 		return BigInteger(this->mDigits.substr(0, this->mDigits.length() - n));
 	}
 	return BigInteger(this->mDigits);

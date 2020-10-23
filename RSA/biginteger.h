@@ -6,6 +6,7 @@
  * \date   October 2020
  *********************************************************************/
 #pragma once
+#include <iostream>
 #include "define.h"
 class BigInteger {
 private:
@@ -27,5 +28,8 @@ public:
 	BigInteger operator>>(const int n) const;
 	BigInteger operator%(const BigInteger n) const;
 	friend std::ostream& operator<<(std::ostream& out, const BigInteger& number);
+
+	int getLen() const {return mDigits.length();}
+	std::string getDigits() const {return mDigits;}
 };
 
