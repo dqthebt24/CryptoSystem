@@ -16,4 +16,6 @@ public:
 	static Algorithm* GetInstance();
 	BigInteger MulMod(const BigInteger x, const BigInteger y, const BigInteger n);
 	BigInteger PowMod(const BigInteger x, const BigInteger p, const BigInteger n);
+	bool PrimeTest(const BigInteger n);
+	BigInteger GenBigInteger(int digits);
 };

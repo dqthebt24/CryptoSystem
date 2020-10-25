@@ -1,3 +1,5 @@
+#include <random>
+#include <ctime>
 #include "algorithm.h"
 
 using namespace std;
@@ -61,7 +63,7 @@ BigInteger Algorithm::MulMod(const BigInteger x, const BigInteger y, const BigIn
 BigInteger Algorithm::PowMod(const BigInteger x, const BigInteger p, const BigInteger n) {
 	BigInteger res("1");
 
-	if (n.Compare(BigInteger("0")) != 1 || n.Compare(BigInteger("1")) || x.Compare(BigInteger("0")) != 1 || p.Compare(BigInteger("0")) == -1) {
+	if (n.Compare(BigInteger("0")) != 1 || x.Compare(BigInteger("0")) != 1 || p.Compare(BigInteger("0")) == -1) {
 		return BigInteger("0");
 	}
 
@@ -85,4 +87,48 @@ BigInteger Algorithm::PowMod(const BigInteger x, const BigInteger p, const BigIn
 	}
 
 	return res;
+}
+
+/**
+ * \brief GenBigInteger(n)
+ * 
+ * \details Generate a BigInteger number with n digits
+ * 
+ * \param digits Number of digits
+ * \return BigInteger number
+ */
+BigInteger Algorithm::GenBigInteger(int digits) 
+{
+	string str = "1";
+	srand(time(nullptr));
+	for (int i = 1; i < digits; i++) {
+		int x = rand() % 2;
+		str.push_back(x == 0 ? '0' : '1');
+	}
+	return BigInteger(str);
+}
+
+/**
+ * \brief PrimeTest(n)
+ * \details Check if a number is prime or not
+ * 			This version only support n > 2
+ * \param 	n 		: BigInteger n
+ * \return 	true	: n is a prime
+ * 			false	: n is not a prime
+ */
+bool Algorithm::PrimeTest(const BigInteger n) {
+	
+	std::vector<BigInteger> bases{BigInteger("10"), BigInteger("11"), BigInteger("101"), BigInteger("111"), BigInteger("10111101")};
+
+	if (n == BigInteger("10")) {
+		return true;
+	}
+
+	for (int i = 0; i< bases.size(); i++) {
+		if (PowMod(bases[i], n - BigInteger("1"), n).Compare(BigInteger("1")) != 0) {
+			return false;
+		}
+	}
+
+	return true;
 }
