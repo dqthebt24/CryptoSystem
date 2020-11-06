@@ -124,7 +124,7 @@ bool Algorithm::PrimeTest(const BigInteger n) {
 		return true;
 	}
 
-	for (int i = 0; i< bases.size(); i++) {
+	for (int i = 0; i< (int) bases.size(); i++) {
 		if (PowMod(bases[i], n - BigInteger("1"), n).Compare(BigInteger("1")) != 0) {
 			return false;
 		}

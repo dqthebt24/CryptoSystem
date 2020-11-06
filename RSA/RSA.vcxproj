@@ -88,10 +88,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -139,11 +141,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BigInteger.cpp" />
+    <ClCompile Include="algorithm.cpp" />
+    <ClCompile Include="bigInteger.cpp" />
     <ClCompile Include="RSA.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BigInteger.h" />
+    <ClInclude Include="algorithm.h" />
+    <ClInclude Include="biginteger.h" />
     <ClInclude Include="calculator.h" />
     <ClInclude Include="define.h" />
   </ItemGroup>

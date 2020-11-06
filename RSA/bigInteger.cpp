@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <string>
+#include "define.h"
 #include "biginteger.h"
 #include "calculator.h"
 
@@ -21,7 +22,7 @@ void BigInteger::free()
 void BigInteger::format()
 {
 	int idx = -1;
-	for (int i = 0 ; i < mDigits.length(); i++) {
+	for (int i = 0 ; i < (int)mDigits.length(); i++) {
 		idx++;
 		if (mDigits[i] == '1') {
 			break;
@@ -41,6 +42,23 @@ BigInteger BigInteger::modulo(const BigInteger a, const BigInteger n) const
 		res = res - n;
 	}
 	return res == n ? BigInteger("0") : res;
+}
+
+vector<BigInteger> BigInteger::Split(const BigInteger n, const int width) const
+{
+	vector<BigInteger> result;
+	string str = n.getDigits();
+	int len = str.length();
+	int i = 1;
+	for (; i*width <= len; i++) {
+		result.push_back(str.substr(len - i*width, width));
+	}
+
+	if ((i - 1) * width < len) {
+		result.push_back(BigInteger(str.substr(0, (len - (i - 1) * width))));
+	}
+
+	return result;
 }
 
 BigInteger::BigInteger() : mDigits("0")
@@ -66,6 +84,15 @@ BigInteger::BigInteger(std::string binary)
 BigInteger::~BigInteger()
 {
 	free();
+}
+
+void BigInteger::Set(int pos, char value)
+{
+	if (mDigits.length() == 0 || pos >= (int) mDigits.length() || pos < 0
+		|| (value != '0' && value != '1')) {
+		return;
+	}
+	mDigits[pos] = value;
 }
 
 /**
@@ -98,35 +125,62 @@ std::ostream& operator<<(std::ostream& out, const BigInteger& number)
 	return out;
 }
 
+#include <bitset>
 BigInteger BigInteger::operator+(const BigInteger n) const
 {
-	string res = "";
-	bool isRemembered = false;
-	int len = this->mDigits.length();
-	int lenN = n.mDigits.length();
-	int lenMax = (int)(MAX(len, lenN));
-	for (int i = 1; i <= lenMax; i++) {
-		if (i > len) {
-			if (isRemembered)
-				res.push_back(add(n.mDigits[lenN - i], '0', isRemembered));
-			else {
-				res.push_back(n.mDigits[lenN - i]);
-			}
-		} else if (i > lenN) {
-			if (isRemembered)
-				res.push_back(add(this->mDigits[len - i], '0', isRemembered));
-			else {
-				res.push_back(this->mDigits[len - i]);
-			}
-		} else {
-			res.push_back(add(this->mDigits[this->mDigits.length() - i], n.mDigits[n.mDigits.length() - i], isRemembered));
-		}
+	std::bitset<1024> x(this->mDigits);
+	std::bitset<1024> y(n.mDigits);
+	std::bitset<1024> carry;
+	while (y != 0) {
+		carry = x & y;
+		x = x ^ y;
+		y = carry << 1;
 	}
-	if (isRemembered) {
-		res.push_back('1');
-	}
-	return BigInteger(string(res.rbegin(), res.rend()));
+	return BigInteger(x.to_string());
 }
+
+//BigInteger BigInteger::operator+(const BigInteger n) const
+//{
+//	BigInteger x = *this;
+//	BigInteger y = n;
+//	BigInteger zero("0");
+//	while (BigInteger(y.mDigits) != zero) {
+//		BigInteger *carry = &(x & y);
+//		x = x ^ y;
+//		y = *carry << 1;
+//	}
+//	return x;
+//}
+
+//BigInteger BigInteger::operator+(const BigInteger n) const
+//{
+//	string res = "";
+//	bool isRemembered = false;
+//	int len = this->mDigits.length();
+//	int lenN = n.mDigits.length();
+//	int lenMax = (int)(MAX(len, lenN));
+//	for (int i = 1; i <= lenMax; i++) {
+//		if (i > len) {
+//			if (isRemembered)
+//				res.push_back(add(n.mDigits[lenN - i], '0', isRemembered));
+//			else {
+//				res.push_back(n.mDigits[lenN - i]);
+//			}
+//		} else if (i > lenN) {
+//			if (isRemembered)
+//				res.push_back(add(this->mDigits[len - i], '0', isRemembered));
+//			else {
+//				res.push_back(this->mDigits[len - i]);
+//			}
+//		} else {
+//			res.push_back(add(this->mDigits[this->mDigits.length() - i], n.mDigits[n.mDigits.length() - i], isRemembered));
+//		}
+//	}
+//	if (isRemembered) {
+//		res.push_back('1');
+//	}
+//	return BigInteger(string(res.rbegin(), res.rend()));
+//}
 
 /**
  * \brief Function do subtraction
@@ -149,7 +203,7 @@ BigInteger BigInteger::operator-(const BigInteger n) const
 	}
 
 	for (int i = 1; i <= len; i++) {
-		if (i > n.mDigits.length()) {
+		if (i > (int)n.mDigits.length()) {
 			if (isRemembered) {
 				res.push_back(sub(this->mDigits[len - i], '0', isRemembered));
 			} else {
@@ -161,6 +215,44 @@ BigInteger BigInteger::operator-(const BigInteger n) const
 	}
 
 	return BigInteger(string(res.rbegin(), res.rend()));
+}
+
+BigInteger BigInteger::operator&(const BigInteger n) const
+{
+	int len = this->mDigits.length();
+	int lenN = n.mDigits.length();
+	int min = MIN(len, lenN);
+	string result="";
+	for (int i = min; i > 0; i--) {
+		result.push_back(AND(this->mDigits.at(len - i), n.mDigits.at(lenN - i)));
+	}
+	return BigInteger(result);
+}
+
+BigInteger BigInteger::operator^(const BigInteger n) const
+{
+	int len = this->mDigits.length();
+	int lenN = n.mDigits.length();
+	int max = MAX(len, lenN);
+	int min = MIN(len, lenN);
+	string result = "";
+	if (max != min) {
+		for (int i = 0; i < max; i++) {
+			if (max - i <= min) {
+				int idx = min - max + i;
+				result.push_back(len > lenN ? XOR(this->mDigits.at(i), n.mDigits.at(idx)) :
+					XOR(this->mDigits.at(idx), n.mDigits.at(i)));
+			} else {
+				result.push_back(len > lenN ? XOR(this->mDigits.at(i), '0') : XOR(n.mDigits.at(i), '0'));
+			}
+		}
+	}
+	else {
+		for (int i = 0; i < max; i++) {
+			result.push_back(XOR(this->mDigits.at(i), n.mDigits.at(i)));
+		}
+	}
+	return BigInteger(result);
 }
 
 /**
@@ -218,6 +310,38 @@ bool BigInteger::operator>(const BigInteger n) const
 	return result;
 }
 
+BigInteger BigInteger::operator%(const BigInteger n) const
+{
+	int lenN = n.getLen();
+	string str(lenN+1, '0');
+	str[0] = '1';
+	BigInteger mod = modulo(BigInteger(str), n);
+
+	std::vector<BigInteger> g = Split(*this, lenN);
+	int N = (int)g.size() - 1;
+	while (N > 0) {
+		BigInteger T = g[N];
+		for (int i = 0; i < lenN; i++) {
+			T = T << 1;
+			while (T.getLen() > lenN && T.getDigits()[0] == '1') {
+				T.Set(0, '0');
+				T = T + mod;
+			}
+		}
+		g[N - 1] = g[N - 1] + T;
+		while (g[N - 1].getLen() > lenN && g[N - 1].getDigits()[0] == '1') {
+			g[N - 1].Set(0, '0');
+			g[N - 1] = g[N - 1] + mod;
+		}
+		N = N - 1;
+	}
+
+	while (g[0] > n) {
+		g[0] = g[0] - n;
+	}
+	return g[0];
+}
+
 /**
  * \brief This function calculates *this % n
  * \details Current version only supports *this > 0, n > 0
@@ -226,42 +350,47 @@ bool BigInteger::operator>(const BigInteger n) const
  * 
  * \return Result of *this % n
  */
-BigInteger BigInteger::operator%(const BigInteger n) const
-{
-	BigInteger res;
-	if (*this == BigInteger("0") || n == BigInteger("0") || *this == n) {
-		return res;
-	}
-
-	if (n > *this) {
-		res = *this;
-	} else if (*this > n) {
-		int len = mDigits.length();
-		int lenN = n.mDigits.length();
-		// BigInteger previous(mDigits.substr(len - lenN + 1));
-		BigInteger previous("1");
-		
-		if (mDigits[len - 1] == '1') {
-			res = previous;
-		}
-
-		// res = previous;
-		for (int i = len - 1; i > 0; i--) {
-			// Calculate (previous*2 % n)
-			previous = modulo(previous << 1, n);
-
-			// Calculate res = (res + previous) % n
-			if (mDigits[i - 1] == '1') {
-				res = modulo(res + previous, n);
-			}
-		}
-
-	}
-
-	return res;
-}
+//BigInteger BigInteger::operator%(const BigInteger n) const
+//{
+//	BigInteger res;
+//	if (*this == BigInteger("0") || n == BigInteger("0") || *this == n) {
+//		return res;
+//	}
+//
+//	if (n > *this) {
+//		res = *this;
+//	} else if (*this > n) {
+//		int len = mDigits.length();
+//		int lenN = n.mDigits.length();
+//		// BigInteger previous(mDigits.substr(len - lenN + 1));
+//		BigInteger previous("1");
+//		
+//		if (mDigits[len - 1] == '1') {
+//			res = previous;
+//		}
+//
+//		// res = previous;
+//		for (int i = len - 1; i > 0; i--) {
+//			// Calculate (previous*2 % n)
+//			previous = modulo(previous << 1, n);
+//
+//			// Calculate res = (res + previous) % n
+//			if (mDigits[i - 1] == '1') {
+//				res = modulo(res + previous, n);
+//			}
+//		}
+//
+//	}
+//
+//	return res;
+//}
 
 bool BigInteger::operator == (const BigInteger n) const 
 {
 	return mDigits.compare(n.mDigits) == 0;
+}
+
+bool BigInteger::operator!=(const BigInteger n) const
+{
+	return *this == n ? false : true;
 }

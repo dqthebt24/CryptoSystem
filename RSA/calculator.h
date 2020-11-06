@@ -51,3 +51,19 @@ char sub(char c1, char c2, bool& isRemembered)
 
 	return res;
 }
+
+char AND(char c1, char c2)
+{
+	if (c1 == '1' && c2 == '1') {
+		return '1';
+	}
+	return '0';
+}
+
+char XOR(char c1, char c2)
+{
+	if (c1 == c2) {
+		return '0';
+	}
+	return '1';
+}
