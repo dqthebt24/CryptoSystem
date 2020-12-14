@@ -125,19 +125,19 @@ std::ostream& operator<<(std::ostream& out, const BigInteger& number)
 	return out;
 }
 
-#include <bitset>
-BigInteger BigInteger::operator+(const BigInteger n) const
-{
-	std::bitset<1024> x(this->mDigits);
-	std::bitset<1024> y(n.mDigits);
-	std::bitset<1024> carry;
-	while (y != 0) {
-		carry = x & y;
-		x = x ^ y;
-		y = carry << 1;
-	}
-	return BigInteger(x.to_string());
-}
+//#include <bitset>
+//BigInteger BigInteger::operator+(const BigInteger n) const
+//{
+//	std::bitset<2048> x(this->mDigits);
+//	std::bitset<2048> y(n.mDigits);
+//	std::bitset<2048> carry;
+//	while (y != 0) {
+//		carry = x & y;
+//		x = x ^ y;
+//		y = carry << 1;
+//	}
+//	return BigInteger(x.to_string());
+//}
 
 //BigInteger BigInteger::operator+(const BigInteger n) const
 //{
@@ -152,36 +152,60 @@ BigInteger BigInteger::operator+(const BigInteger n) const
 //	return x;
 //}
 
-//BigInteger BigInteger::operator+(const BigInteger n) const
-//{
-//	string res = "";
-//	bool isRemembered = false;
-//	int len = this->mDigits.length();
-//	int lenN = n.mDigits.length();
-//	int lenMax = (int)(MAX(len, lenN));
-//	for (int i = 1; i <= lenMax; i++) {
-//		if (i > len) {
-//			if (isRemembered)
-//				res.push_back(add(n.mDigits[lenN - i], '0', isRemembered));
-//			else {
-//				res.push_back(n.mDigits[lenN - i]);
-//			}
-//		} else if (i > lenN) {
-//			if (isRemembered)
-//				res.push_back(add(this->mDigits[len - i], '0', isRemembered));
-//			else {
-//				res.push_back(this->mDigits[len - i]);
-//			}
-//		} else {
-//			res.push_back(add(this->mDigits[this->mDigits.length() - i], n.mDigits[n.mDigits.length() - i], isRemembered));
-//		}
-//	}
-//	if (isRemembered) {
-//		res.push_back('1');
-//	}
-//	return BigInteger(string(res.rbegin(), res.rend()));
-//}
+BigInteger BigInteger::operator+(const BigInteger n) const
+{
+	string strN = n.getDigits();
+	bool isRemembered = false;
+	int len = (int)mDigits.length();
+	int lenN = (int)strN.length();
+	int lenMax = MAX(len, lenN);
+	int idx = lenMax - 1;
+	len--;
+	lenN--;
+	std::string res(lenMax, '0');
+	char c = '0';
 
+	while (len >= 0 || lenN >= 0) {
+		char a = len >= 0 ? mDigits[len] : '0';
+		char b = lenN >= 0 ? strN[lenN] : '0';
+		res[idx] = ( (a ^ b) ^ c);
+		c = ((a & b) | (a & c) | (b & c));
+		idx--;
+		len--;
+		lenN--;
+	}
+
+	if (c == '1') {
+		res.insert(0, "1");
+	}
+	return BigInteger(res);
+}
+
+BigInteger& BigInteger::operator+=(const BigInteger& n)
+{
+	string strN = n.getDigits();
+	bool isRemembered = false;
+	int len = (int)mDigits.length();
+	int lenN = (int)strN.length();
+	int lenMax = MAX(len, lenN);
+	int idx = lenMax - 1;
+
+	len--;
+	lenN--;
+	std::string res(lenMax, '0');
+	while (len >= 0 || lenN >= 0) {
+		res[idx] = add(len >= 0 ? mDigits[len] : '0', lenN >= 0 ? strN[lenN] : '0', isRemembered);
+		idx--;
+		len--;
+		lenN--;
+	}
+
+	if (isRemembered) {
+		res.insert(0, "1");
+	}
+	this->mDigits = res;
+	return *this;
+}
 /**
  * \brief Function do subtraction
  * \details This version of code support "*this" - n with "*this" >= n only
@@ -193,10 +217,10 @@ BigInteger BigInteger::operator+(const BigInteger n) const
  */
 BigInteger BigInteger::operator-(const BigInteger n) const 
 {
-	string res = "";
 	bool isRemembered = false;
 	int len = this->mDigits.length();
 	int lenN = n.mDigits.length();
+	std::string res(len, '0');
 
 	if (n > *this) {
 		return BigInteger("0");
@@ -205,18 +229,52 @@ BigInteger BigInteger::operator-(const BigInteger n) const
 	for (int i = 1; i <= len; i++) {
 		if (i > (int)n.mDigits.length()) {
 			if (isRemembered) {
-				res.push_back(sub(this->mDigits[len - i], '0', isRemembered));
+				res[len - i] = sub(this->mDigits[len - i], '0', isRemembered);
 			} else {
-				res.push_back(this->mDigits[len - i]);
+				res[len - i] = this->mDigits[len - i];
 			}
 		} else {
-			res.push_back(sub(this->mDigits[len - i], n.mDigits[lenN - i], isRemembered));
+			res[len - i] = sub(this->mDigits[len - i], n.mDigits[lenN - i], isRemembered);
 		}
 	}
 
-	return BigInteger(string(res.rbegin(), res.rend()));
+	return BigInteger(res);
 }
 
+/**
+ * \brief Function do subtraction
+ * \details This version of code support "*this" - n with "*this" >= n only
+ *			"*this": Minuend
+ * 
+ * \param n
+ * \return 
+ */
+BigInteger& BigInteger::operator-=(const BigInteger& n)
+{
+	string res = "";
+	bool isRemembered = false;
+	int len = this->mDigits.length();
+	int lenN = n.mDigits.length();
+
+	if (n > *this) {
+		this->mDigits = "0";
+		return *this;
+	}
+
+	for (int i = 1; i <= len; i++) {
+		if (i > (int)n.mDigits.length()) {
+			if (isRemembered) {
+				this->mDigits[len - i] = sub(this->mDigits[len - i], '0', isRemembered);
+			} else {
+				this->mDigits[len - i] = this->mDigits[len - i];
+			}
+		} else {
+			this->mDigits[len - i] = sub(this->mDigits[len - i], n.mDigits[lenN - i], isRemembered);
+		}
+	}
+	this->format();
+	return *this;//BigInteger(string(res.rbegin(), res.rend()));
+}
 BigInteger BigInteger::operator&(const BigInteger n) const
 {
 	int len = this->mDigits.length();
@@ -310,7 +368,7 @@ bool BigInteger::operator>(const BigInteger n) const
 	return result;
 }
 
-BigInteger BigInteger::operator%(const BigInteger n) const
+BigInteger BigInteger::operator%(const BigInteger& n) const
 {
 	int lenN = n.getLen();
 	string str(lenN+1, '0');
@@ -325,13 +383,13 @@ BigInteger BigInteger::operator%(const BigInteger n) const
 			T = T << 1;
 			while (T.getLen() > lenN && T.getDigits()[0] == '1') {
 				T.Set(0, '0');
-				T = T + mod;
+				T += mod;
 			}
 		}
-		g[N - 1] = g[N - 1] + T;
+		g[N - 1] +=  T;
 		while (g[N - 1].getLen() > lenN && g[N - 1].getDigits()[0] == '1') {
 			g[N - 1].Set(0, '0');
-			g[N - 1] = g[N - 1] + mod;
+			g[N - 1] += mod;
 		}
 		N = N - 1;
 	}
@@ -340,6 +398,48 @@ BigInteger BigInteger::operator%(const BigInteger n) const
 		g[0] = g[0] - n;
 	}
 	return g[0];
+}
+
+BigInteger& BigInteger::operator%=(const BigInteger& n)
+{
+	int lenN = n.getLen();
+	string str(lenN + 1, '0');
+	str[0] = '1';
+	BigInteger mod = modulo(BigInteger(str), n);
+
+	std::vector<BigInteger> g = Split(*this, lenN);
+	int N = (int)g.size() - 1;
+	while (N > 0) {
+		BigInteger T = g[N];
+		for (int i = 0; i < lenN; i++) {
+			T = T << 1;
+			while (T.getLen() > lenN && T.getDigits()[0] == '1') {
+				T.Set(0, '0');
+				T += mod;
+			}
+		}
+		g[N - 1] += T;
+		while (g[N - 1].getLen() > lenN && g[N - 1].getDigits()[0] == '1') {
+			g[N - 1].Set(0, '0');
+			g[N - 1] += mod;
+		}
+		N = N - 1;
+	}
+
+	while (g[0] > n) {
+		g[0] = g[0] - n;
+	}
+	this->mDigits = g[0].mDigits;
+	return *this;
+}
+
+void BigInteger::LShift(int n)
+{
+	if (n > 0) {
+		for (int i = 0; i < n; i++) {
+			mDigits.push_back('0');
+		}
+	}
 }
 
 /**

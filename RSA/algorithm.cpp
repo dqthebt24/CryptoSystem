@@ -27,28 +27,36 @@ BigInteger Algorithm::MulMod(const BigInteger x, const BigInteger y, const BigIn
 {
 	BigInteger res;
 	
+
 	if (x.Compare(BigInteger("0")) != 1 || y.Compare(BigInteger("0")) != 1 || n.Compare(BigInteger("0")) != 1) {
 		return res;
 	}
 
 	BigInteger znX = x % n;
 	BigInteger znY = y % n;
-	string strZnY = znY.getDigits();
+	string strZnY = y.getDigits();
 	int lenY = strZnY.length();
+	int i = lenY - 1;
 
-	if (strZnY[lenY - 1] == '1') {
+	if (strZnY[i] == '1') {
 		res = znX;
 	}
 
-	for (int i = 1; i < lenY; i++) {
-		znX = (znX << 1) % n;
+	
 
-		if (strZnY[lenY - i -1] == '1') {
-			res = (res + znX) % n;
+	for (; i >= 0; i--) {
+		// znX = (znX << 1) % n;
+		// znX = (znX << 1);
+		znX.LShift(1);
+
+		if (strZnY[i] == '1') {
+			// res = (res + znX) % n;
+			// res = (res + znX);
+			res+=znX;
 		}
 	}
 
-	return res;
+	return res % n;
 }
 
 /**

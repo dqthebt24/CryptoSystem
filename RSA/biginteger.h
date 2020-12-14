@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include "define.h"
+
 class BigInteger {
 private:
 	std::string mDigits;
@@ -27,13 +28,20 @@ public:
 	bool operator>(const BigInteger n) const;
 	bool operator==(const BigInteger n) const;
 	bool operator!=(const BigInteger n) const;
+
 	BigInteger operator+(const BigInteger n) const;
+	BigInteger& operator+=(const BigInteger& n);
 	BigInteger operator-(const BigInteger n) const;
+	BigInteger& operator-=(const BigInteger& n);
+	BigInteger operator%(const BigInteger& n) const;
+	BigInteger& operator%=(const BigInteger& n);
+	void LShift(int n);
+
 	BigInteger operator&(const BigInteger n) const;
 	BigInteger operator^(const BigInteger n) const;
 	BigInteger operator<<(const int n) const;
 	BigInteger operator>>(const int n) const;
-	BigInteger operator%(const BigInteger n) const;
+	
 	friend std::ostream& operator<<(std::ostream& out, const BigInteger& number);
 
 	int getLen() const {return mDigits.length();}

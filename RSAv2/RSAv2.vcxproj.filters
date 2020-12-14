@@ -15,27 +15,24 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="RSAv2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="algorithm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bigInteger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RSA.cpp">
+    <ClCompile Include="bigint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="define.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="calculator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="algorithm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="biginteger.h">
+    <ClInclude Include="bigint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="define.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
