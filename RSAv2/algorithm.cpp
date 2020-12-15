@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cstring>
 #include <string>
 #include <time.h>
 #include "algorithm.h"
