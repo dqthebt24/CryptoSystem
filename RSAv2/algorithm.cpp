@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <string>
 #include <time.h>
 #include "algorithm.h"
 
@@ -23,8 +24,11 @@ char* Algorithm::GenBinaryString(int length)
         return charset[rand() % max_index];
     };
 
-    char* str = new char[length];
-    std::generate_n(str, length, randchar);
-    str[length] = '\0';
-    return str;
+    string str(length, 0);
+    generate_n(str.begin(), length, randchar);
+
+    char* cstr = new char[str.length() + 1];
+    memcpy(cstr, str.c_str(), length);
+    cstr[length] = '\0';
+    return cstr;
 }

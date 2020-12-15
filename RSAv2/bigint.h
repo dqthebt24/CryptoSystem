@@ -17,5 +17,6 @@ public:
 	string getDigits() { return string(mDigits); }
 
 	BigInt operator+(const BigInt n);
+	BigInt operator=(BigInt n);
 };
 
