@@ -47,11 +47,8 @@ BigInt::BigInt(const int numDigits)
 
 BigInt::~BigInt()
 {
-	// cout << "~~~~~~~~~~~~" << endl;
 	if (mDigits != nullptr) {
-		// cout << "Delete!!!!!" << endl;
 		len = 0;
-		// [DB] printf("DEL: %x\n", mDigits);
 		delete[] mDigits;
 		mDigits = nullptr;
 	}
@@ -60,7 +57,6 @@ BigInt::~BigInt()
 BigInt::BigInt(const BigInt& bigInt)
 {	
 	cloneNumber(this, bigInt.mDigits, bigInt.len);
-	// [DB] printf("AAAAA:%x\n", this->mDigits);
 }
 
 BigInt::BigInt(const char* digits)
@@ -70,18 +66,36 @@ BigInt::BigInt(const char* digits)
 
 vector<BigInt> BigInt::_split(const BigInt& n, const int width)
 {
+	int count = 1;
 	vector<BigInt> result;
-	string str(n.mDigits);
-	int len = str.length();
-	int i = 1;
-	for (; i*width <= len; i++) {
-		result.push_back(BigInt(str.substr(len - i*width, width).c_str()));
+	char* digits = nullptr;
+	for (; ;count++) {
+		if (count*width >= (int)n.len) {
+			break;
+		}
 	}
 
-	if ((i - 1) * width < len) {
-		result.push_back(BigInt(str.substr(0, (len - (i - 1) * width)).c_str()));
+	digits = new char[count*width + 1];
+
+	if (count*width > (int)n.len) {
+		int size = count*width - (int)n.len;
+		memcpy(digits + size, n.mDigits,n.len);
+		memset(digits, '0', size);
+	} else {
+		memcpy(digits, n.mDigits,n.len);
 	}
 
+	digits[count*width] = '\0';
+
+	for (int i = count - 1; i >= 0; i--) {
+		char* tmp = new char[width + 1];
+		memcpy(tmp, digits + i*width, width);
+		tmp[width] = '\0';
+		result.push_back(BigInt(tmp));
+		delete[] tmp;
+	}
+
+	delete[] digits;
 	return result;
 }
 
@@ -94,7 +108,7 @@ void BigInt::_firstComplement(char* digits)
 	}
 }
 
-void BigInt::_shiftLeft(const int bits) {
+void BigInt::_shiftLeft(const int bits, const bool useFormat) {
 	if (bits > 0 && this->len > 0) {
 		char* tmp = this->mDigits;
 		char* newDigits = new char[this->len + 1];
@@ -103,13 +117,15 @@ void BigInt::_shiftLeft(const int bits) {
 		newDigits[this->len] = '\0';
 
 		cloneNumber(this, newDigits, strlen(newDigits));
-		this->format();
+		if (useFormat) {
+			this->format();
+		}
 
 		delete[] tmp;
 	}
 }
 
-void BigInt::_shiftRight(const int bits) {
+void BigInt::_shiftRight(const int bits, const bool useFormat) {
 	if (bits > 0 && this->len > 0) {
 		char* tmp = this->mDigits;
 		char* newDigits = new char[this->len + 1];
@@ -119,7 +135,9 @@ void BigInt::_shiftRight(const int bits) {
 		
 		cloneNumber(this, newDigits, strlen(newDigits));
 
-		this->format();
+		if (useFormat) {
+			this->format();
+		}
 
 		delete[] tmp;
 	}
@@ -303,30 +321,51 @@ BigInt BigInt::operator%(const BigInt& n)
 	BigInt mod = BigInt(modChars) - n;
 	delete[] modChars;
 
+	auto _shiftLeftOne = [](BigInt* num) -> void {
+        if (num->mDigits[0] == '0') {
+        	num->_shiftLeft(1, false);
+        } else {
+        	char* tmp = new char[num->len + 2];
+        	memcpy(tmp, num->mDigits, num->len);
+        	tmp[num->len] = '0';
+        	tmp[num->len + 1] = '\0';
+        	delete[] num->mDigits;
+        	num->mDigits = tmp;
+        	num->len = num->len + 1;
+        }
+    };
+
 	vector<BigInt> g = _split(*this, lenN);
+
 	int N = (int)g.size() - 1;
 	while (N > 0) {
 		BigInt T = g[N];
 		for (size_t i = 0; i < lenN; i++) {
-			T = T << 1;
+			_shiftLeftOne(&T);
 			while (T.len > lenN && T.mDigits[0] == '1') {
 				T.mDigits[0] = '0';
 				T += mod;
 			}
+
+			T.format();
 		}
 		g[N - 1] +=  T;
-		while (g[N - 1].len > lenN && g[N - 1].mDigits[0] == '1') {
+
+		while (g[N-1].len > lenN && g[N - 1].mDigits[0] == '1') {
 			g[N - 1].mDigits[0] = '0';
 			g[N - 1] += mod;
 		}
 		N = N - 1;
 	}
 
-
-	while (g[0] > n) {
+	g[0].format();	
+	while (g[0] >= n) {
 		g[0] = g[0] - n;
 	}
 
+	if (g[0].len == 0 ) {
+		return BigInt("0");
+	}
 	return g[0];
 }
 
@@ -354,9 +393,7 @@ BigInt BigInt::operator-(const BigInt& n)
 		delete[] tmp;
 	}
 
-
 	BigInt com = BigInt(digits) + BigInt("1");
-
 
 	BigInt res = *this + com;
 

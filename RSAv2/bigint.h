@@ -10,8 +10,8 @@ private:
 	size_t len;
 	vector<BigInt> _split(const BigInt& n, const int width);
 	void _firstComplement(char* digits);
-	void _shiftLeft(const int bits);
-	void _shiftRight(const int bits);
+	void _shiftLeft(const int bits, const bool useFormat = true);
+	void _shiftRight(const int bits, const bool useFormat = true);
 	void format();
 	int _len() {return (int)strlen(mDigits);}
 

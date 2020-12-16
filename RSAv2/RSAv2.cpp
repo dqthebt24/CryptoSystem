@@ -23,7 +23,7 @@ int main()
     std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
     sleepcp(1000);
     begin = std::chrono::steady_clock::now();
-    BigInt b(1024);
+    BigInt b(2048);
     end = std::chrono::steady_clock::now();
     std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
     cout << "A= " << a.getDigits() << endl;
