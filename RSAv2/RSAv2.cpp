@@ -29,20 +29,19 @@ int main()
     cout << "A= " << a.getDigits() << endl;
     cout << "B= " << b.getDigits() << endl;
     
+
     begin = std::chrono::steady_clock::now();
     BigInt c = a+b;
     end = std::chrono::steady_clock::now();
-    cout << "C=" << c.getDigits() << endl;
+    cout << "C= " << c.getDigits() << endl;
     std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
     
-
     begin = std::chrono::steady_clock::now();
     bool res = a > b;
     end = std::chrono::steady_clock::now();
 
     cout<<"Compare:"<<(a > b)<<";"<<(b > a)<<";"<<(a>=b)<<endl;
     std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
-
 
     // Test subtraction
     begin = std::chrono::steady_clock::now();

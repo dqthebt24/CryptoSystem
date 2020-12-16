@@ -152,7 +152,7 @@ BigInt BigInt::operator+(const BigInt n)
 	bool isRemembered = false;
 	int len = (int)strlen(mDigits);
 	int lenN = (int)strlen(n.mDigits);
-	size_t lenMax = MAX(len, lenN);
+	int lenMax = MAX(len, lenN);
 	int idx = lenMax - 1;
 
 	len--;
@@ -330,6 +330,13 @@ BigInt BigInt::operator%(const BigInt& n)
 	return g[0];
 }
 
+/**
+ * \brief Function calculate a - b
+ * \details This version for only a >= b
+ * 
+ * \param n The number b
+ * \return a - b
+ */
 BigInt BigInt::operator-(const BigInt& n)
 {
 	char* digits = new char[n.len + 1];
@@ -337,8 +344,22 @@ BigInt BigInt::operator-(const BigInt& n)
 	digits[n.len] = '\0';
 
 	_firstComplement(digits);
+
+	if (this->len > n.len) {
+		char* tmp = digits;
+		digits = new char[this->len + 1];
+		memset(digits, '1', this->len);
+		memcpy(digits + (this->len - n.len), tmp, n.len);
+		digits[this->len] = '\0';
+		delete[] tmp;
+	}
+
+
 	BigInt com = BigInt(digits) + BigInt("1");
+
+
 	BigInt res = *this + com;
+
 	if (res.len > this->len) {
 		char* tmp = res.mDigits;
 		res.mDigits = new char[this->len + 1];
