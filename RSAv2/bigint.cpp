@@ -108,6 +108,12 @@ void BigInt::_firstComplement(char* digits)
 	}
 }
 
+/**
+ * \brief Function shift left no change bits size
+ * 
+ * \param bits number of bits to shift
+ * \param useFormat Format after shift or not
+ */
 void BigInt::_shiftLeft(const int bits, const bool useFormat) {
 	if (bits > 0 && this->len > 0) {
 		char* tmp = this->mDigits;
@@ -315,25 +321,25 @@ BigInt BigInt::operator%(const BigInt& n)
 	// Calculate 2^Width(Y) mod Y
 	size_t lenN = n.len;
 	char* modChars = new char[lenN + 2];
-    memset(modChars, '0', lenN + 2);
-    modChars[0] = '1';
-    modChars[lenN + 1] = '\0';
+	memset(modChars, '0', lenN + 2);
+	modChars[0] = '1';
+	modChars[lenN + 1] = '\0';
 	BigInt mod = BigInt(modChars) - n;
 	delete[] modChars;
 
 	auto _shiftLeftOne = [](BigInt* num) -> void {
-        if (num->mDigits[0] == '0') {
-        	num->_shiftLeft(1, false);
-        } else {
-        	char* tmp = new char[num->len + 2];
-        	memcpy(tmp, num->mDigits, num->len);
-        	tmp[num->len] = '0';
-        	tmp[num->len + 1] = '\0';
-        	delete[] num->mDigits;
-        	num->mDigits = tmp;
-        	num->len = num->len + 1;
-        }
-    };
+		if (num->mDigits[0] == '0') {
+			num->_shiftLeft(1, false);
+		} else {
+			char* tmp = new char[num->len + 2];
+			memcpy(tmp, num->mDigits, num->len);
+			tmp[num->len] = '0';
+			tmp[num->len + 1] = '\0';
+			delete[] num->mDigits;
+			num->mDigits = tmp;
+			num->len = num->len + 1;
+		}
+	};
 
 	vector<BigInt> g = _split(*this, lenN);
 
@@ -425,6 +431,14 @@ BigInt BigInt::operator>>(const int bits)
 BigInt BigInt::operator<<(const int bits)
 {
 	BigInt res(this->mDigits);
-	res._shiftLeft(bits);
+	char* tmp = new char[this->len + bits + 1];
+	memcpy(tmp, this->mDigits, this->len);
+	memset(tmp + this->len, '0', bits);
+	tmp[this->len + bits] = '\0';
+	
+	delete[] res.mDigits;
+	res.mDigits = tmp;
+	res.len = this->len + bits;
+	res.format();
 	return res;
 }
