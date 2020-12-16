@@ -7,6 +7,6 @@ private:
 public:
 	static Algorithm* GetInstance();
 	char* GenBinaryString(int length);
-	BigInt MulMod(BigInt& x, BigInt& y, BigInt& n);
+	BigInt MulMod(const BigInt& x, const BigInt& y, const BigInt& n);
 };
 

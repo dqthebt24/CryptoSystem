@@ -64,7 +64,7 @@ BigInt::BigInt(const char* digits)
 	cloneNumber(this, digits, strlen(digits));
 }
 
-vector<BigInt> BigInt::_split(const BigInt& n, const int width)
+vector<BigInt> BigInt::_split(const BigInt& n, const int width) const
 {
 	int count = 1;
 	vector<BigInt> result;
@@ -292,7 +292,7 @@ bool BigInt::operator>(const BigInt& n)
 	return result;
 }
 
-bool BigInt::operator==(const BigInt& n)
+bool BigInt::operator==(const BigInt& n) const
 {
 	bool result = true;
 	size_t len = this->len;
@@ -316,7 +316,7 @@ bool BigInt::operator>=(const BigInt& n)
 	return *this > n || *this == n;
 }
 
-BigInt BigInt::operator%(const BigInt& n)
+BigInt BigInt::operator%(const BigInt& n) const
 {
 	// Calculate 2^Width(Y) mod Y
 	size_t lenN = n.len;

@@ -36,7 +36,8 @@ char* Algorithm::GenBinaryString(int length)
     return cstr;
 }
 
-BigInt Algorithm::MulMod(BigInt& x, BigInt& y, BigInt& n)
+BigInt Algorithm::MulMod(const BigInt& x, const BigInt& y, const BigInt& n)
+
 {
     BigInt res("0");
     BigInt rezo("0");

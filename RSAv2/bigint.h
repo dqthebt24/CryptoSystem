@@ -8,7 +8,7 @@ class BigInt {
 private:
 	char* mDigits;
 	size_t len;
-	vector<BigInt> _split(const BigInt& n, const int width);
+	vector<BigInt> _split(const BigInt& n, const int width) const;
 	void _firstComplement(char* digits);
 	void _shiftLeft(const int bits, const bool useFormat = true);
 	void _shiftRight(const int bits, const bool useFormat = true);
@@ -32,13 +32,13 @@ public:
 	void operator=(const BigInt& n);
 	BigInt operator+(const BigInt n);
 	void operator+=(const BigInt& n);
-	BigInt operator%(const BigInt& n);
+	BigInt operator%(const BigInt& n) const;
 	BigInt operator-(const BigInt& n);
 	BigInt operator>>(const int bits);
 	BigInt operator<<(const int bits);
 
 	// Comparations
 	bool operator>(const BigInt& n);
-	bool operator==(const BigInt& n);
+	bool operator==(const BigInt& n) const;
 	bool operator>=(const BigInt& n);
 };
