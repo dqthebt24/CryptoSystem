@@ -23,18 +23,18 @@ int main()
     std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
     sleepcp(1000);
     begin = std::chrono::steady_clock::now();
-    BigInt b(2048);
+    BigInt b(1024);
     end = std::chrono::steady_clock::now();
     std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
     cout << "A= " << a.getDigits() << endl;
     cout << "B= " << b.getDigits() << endl;
     
-    /*begin = std::chrono::steady_clock::now();
+    begin = std::chrono::steady_clock::now();
     BigInt c = a+b;
     end = std::chrono::steady_clock::now();
     cout << "C=" << c.getDigits() << endl;
     std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
-    */
+    
 
     begin = std::chrono::steady_clock::now();
     bool res = a > b;

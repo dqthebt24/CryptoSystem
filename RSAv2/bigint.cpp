@@ -38,7 +38,6 @@ BigInt::BigInt(const int numDigits)
 		mDigits = Algorithm::GetInstance()->GenBinaryString(numDigits);
 		mDigits[0] = '1';
 		len = strlen(mDigits);
-		// [DB] printf("THIS0000: %x;;;%x\n",this, this->mDigits);
 	}
 	else {
 		mDigits = nullptr;
@@ -96,7 +95,7 @@ void BigInt::_firstComplement(char* digits)
 }
 
 void BigInt::_shiftLeft(const int bits) {
-	if (bits > 0) {
+	if (bits > 0 && this->len > 0) {
 		char* tmp = this->mDigits;
 		char* newDigits = new char[this->len + 1];
 		memcpy(newDigits, tmp + bits, len - bits);
@@ -111,7 +110,7 @@ void BigInt::_shiftLeft(const int bits) {
 }
 
 void BigInt::_shiftRight(const int bits) {
-	if (bits > 0) {
+	if (bits > 0 && this->len > 0) {
 		char* tmp = this->mDigits;
 		char* newDigits = new char[this->len + 1];
 		memcpy(newDigits + bits, tmp, len - bits);
@@ -131,7 +130,7 @@ void BigInt::format()
 	if (this->mDigits != nullptr) {
 		char* tmp = this->mDigits;
 		int count = 0;
-		for (int i = 0; i < len; i++) {
+		for (size_t i = 0; i < len; i++) {
 			if (this->mDigits[i] != '0') {
 				break;
 			}
@@ -238,10 +237,10 @@ void BigInt::operator=(const BigInt& n)
 		delete[] this->mDigits;
 	}
 
-	this->mDigits = new char[n.len];
+	this->mDigits = new char[n.len + 1];
 	memcpy(this->mDigits, n.mDigits, n.len);
-	this->len = len;
-	this->mDigits[len] = '\0';
+	this->len = n.len;
+	this->mDigits[this->len] = '\0';
 }
 
 bool BigInt::operator>(const BigInt& n)
@@ -250,22 +249,17 @@ bool BigInt::operator>(const BigInt& n)
 	size_t len = this->len;
 	size_t lenN = n.len;
 
-	cout<<"LEN: "<<len<<"<>"<<lenN;
 	if (len > lenN) {
 		result = true;
-		cout<<"RES1111\n";
 	} else if (len < lenN) {
 		result = false;
-		cout<<"RES22222\n";
 	} else {
 		for (size_t i = 0; i < len; i++) {
 			if (this->mDigits[i] != n.mDigits[i]) {
 				if (this->mDigits[i] == '0') {
 					result = false;
-					cout<<"RES33333\n";
 				} else {
 					result = true;
-					cout<<"RES44444\n";
 				}
 				break;
 			}
@@ -300,9 +294,8 @@ bool BigInt::operator>=(const BigInt& n)
 
 BigInt BigInt::operator%(const BigInt& n)
 {
-	cout<<"N= "<<n.mDigits<<endl;
 	// Calculate 2^Width(Y) mod Y
-	int lenN = (int)n.len;
+	size_t lenN = n.len;
 	char* modChars = new char[lenN + 2];
     memset(modChars, '0', lenN + 2);
     modChars[0] = '1';
@@ -312,11 +305,9 @@ BigInt BigInt::operator%(const BigInt& n)
 
 	vector<BigInt> g = _split(*this, lenN);
 	int N = (int)g.size() - 1;
-	cout<<"N="<<N<<endl;
-	cout<<g[0].mDigits<<endl;
 	while (N > 0) {
 		BigInt T = g[N];
-		for (int i = 0; i < lenN; i++) {
+		for (size_t i = 0; i < lenN; i++) {
 			T = T << 1;
 			while (T.len > lenN && T.mDigits[0] == '1') {
 				T.mDigits[0] = '0';
@@ -333,20 +324,15 @@ BigInt BigInt::operator%(const BigInt& n)
 
 
 	while (g[0] > n) {
-		BigInt tmp = BigInt(g[0].mDigits) - n;
-		g[0] = tmp;
-		cout<<"TMP: "<<tmp.mDigits<<endl;
-		cout<<"COMPARE: "<<(tmp > n)<<endl;
-		cout<<"G0: "<<g[0].mDigits<<endl;
+		g[0] = g[0] - n;
 	}
 
-	cout<<"G0FFF: "<<(g[0].mDigits)<<endl;
 	return g[0];
 }
 
 BigInt BigInt::operator-(const BigInt& n)
 {
-	char* digits = new char[n.len];
+	char* digits = new char[n.len + 1];
 	memcpy(digits, n.mDigits, n.len);
 	digits[n.len] = '\0';
 
@@ -355,19 +341,24 @@ BigInt BigInt::operator-(const BigInt& n)
 	BigInt res = *this + com;
 	if (res.len > this->len) {
 		char* tmp = res.mDigits;
-		res.mDigits = new char[this->len];
+		res.mDigits = new char[this->len + 1];
 		memcpy(res.mDigits, tmp + (res.len - this->len), this->len);
-		res.mDigits[this->len - 1] = '\0';
+		res.mDigits[this->len] = '\0';
+		res.len = this->len;
 		res.format();
 
 		delete[] tmp;
 	}
 
+	delete[] digits;
 	return res;
 }
 
 BigInt BigInt::operator>>(const int bits)
 {
+	if (this->len == 0 || this->mDigits == nullptr) {
+		return BigInt(this->mDigits);
+	}
 	BigInt res(this->mDigits);
 	res._shiftRight(bits);
 	return res;

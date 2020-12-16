@@ -79,12 +79,19 @@ int main()
     ///* Generate big number */
     begin = std::chrono::steady_clock::now();
     BigInteger a = algorithm->GenBigInteger(2048);
-    /*sleepcp(10000);
-    BigInteger b = algorithm->GenBigInteger(2048);
-    BigInteger n = algorithm->GenBigInteger(2048);
+    end = std::chrono::steady_clock::now();
+    std::cout << "a=" << a << std::endl;
+    std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[탎]" << std::endl;
+    
+    sleepcp(1000);
+    begin = std::chrono::steady_clock::now();
+    BigInteger b = algorithm->GenBigInteger(1024);
+    end = std::chrono::steady_clock::now();
+    std::cout << "b=" << b << std::endl;
+    std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[탎]" << std::endl;
+    /*BigInteger n = algorithm->GenBigInteger(2048);
     BigInteger c(a.getDigits());*/
 
-    //std::cout << "a=" << a << std::endl;
     //std::cout << "b=" << b << std::endl;
     //std::cout << "n=" << n << std::endl;
 
@@ -93,8 +100,8 @@ int main()
 
     begin = std::chrono::steady_clock::now();
     std::cout << "a + b     " << a % b << std::endl;*/
-    end = std::chrono::steady_clock::now();
-    std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[탎]" << std::endl;
+    // end = std::chrono::steady_clock::now();
+    // std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[탎]" << std::endl;
 
     //begin = std::chrono::steady_clock::now();
     //c += b;
@@ -116,10 +123,11 @@ int main()
 
 
 
-    //begin = std::chrono::steady_clock::now();
-    //std::cout << "a%b         " << (a % b) << std::endl;
-    //end = std::chrono::steady_clock::now();
-    //std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[탎]" << std::endl;
+    begin = std::chrono::steady_clock::now();
+    BigInteger bigIntC = a % b;
+    end = std::chrono::steady_clock::now();
+    std::cout << "a%b         " << bigIntC << std::endl;
+    std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[탎]" << std::endl;
 
     //c = a;
     //begin = std::chrono::steady_clock::now();
