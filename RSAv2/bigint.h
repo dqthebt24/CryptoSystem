@@ -26,7 +26,7 @@ public:
 	void setLen(size_t len) {this->len = len;}
 
 	size_t getLen() { return len; }
-	string getDigits() { return string(mDigits); }
+	char* getDigits() const { return mDigits; }
 
 	// Calculations
 	void operator=(const BigInt& n);
@@ -38,7 +38,7 @@ public:
 	BigInt operator<<(const int bits);
 
 	// Comparations
-	bool operator>(const BigInt& n);
+	bool operator>(const BigInt& n) const;
 	bool operator==(const BigInt& n) const;
-	bool operator>=(const BigInt& n);
+	bool operator>=(const BigInt& n) const;
 };

@@ -50,7 +50,7 @@ void populateBitSet(std::string& buffer, boost::dynamic_bitset<unsigned char>& b
 int main()
 {
     
-    int bits = 2048;
+    int bits = 256;
     std::chrono::steady_clock::time_point begin, end;
     Algorithm* algorithm = Algorithm::GetInstance();
 
@@ -78,20 +78,20 @@ int main()
     /*BigInteger b("1100010101111110010110000111011011110111101101010101101001010010000011010001000011110011001000001010110000001100011010001000001101010100011011011111100001111001100111100001100011111100011000111110111101100101101101011111100011011000110010111001011111111001101010001011111011001111001010010101001000010001010000000100100010001111010100111000001110001001011001000101011110001100111111010111000010101000111101110101011101101011101110001110000001000101010111100101110010011101110110111001100000110100011100011000000100111100110000011000100000000111111010011111000100111101110010100101111001101011001010101101100000110010000011000010111100001100001111011111111000100001100010001101001010000100111110111100111011000101001101100110010100001010000100100010111111111011111101000101010000010101011101100100100100011100111101010010111001000110011010000100010000100000011010100011100010110011111010110101000111000101001110110011011010100100111001010000000011001110010111101111011100001111011001001011101001111001111011000001101100101011");*/
     ///* Generate big number */
     begin = std::chrono::steady_clock::now();
-    BigInteger a = algorithm->GenBigInteger(1024);
+    BigInteger a = algorithm->GenBigInteger(bits);
     end = std::chrono::steady_clock::now();
     std::cout << "a=" << a << std::endl;
     std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[탎]" << std::endl;
     
     sleepcp(1000);
     begin = std::chrono::steady_clock::now();
-    BigInteger b = algorithm->GenBigInteger(1024);
+    BigInteger b = algorithm->GenBigInteger(bits);
     end = std::chrono::steady_clock::now();
     std::cout << "b=" << b << std::endl;
     std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[탎]" << std::endl;
     
     sleepcp(1000);
-    BigInteger n = algorithm->GenBigInteger(1024);
+    BigInteger n = algorithm->GenBigInteger(bits);
     /*BigInteger c(a.getDigits());*/
 
     //std::cout << "b=" << b << std::endl;
@@ -144,17 +144,8 @@ int main()
     end = std::chrono::steady_clock::now();
     std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[탎]" << std::endl;
 
-    string x = "1000";
-    string y = "1001";
-    string sum = "";
-    int c = 0;
-    for (int i = 3; i >=0 ; i--) {
-        sum.push_back((x[i] ^ y[i]) ^ c); // c is carry
-        c = ((x[i] & y[i]) | (x[i] & c)) | (y[i] & c);
-    }
-    if (c == 1) {
-        sum[0] = 1;
-    }
-
-    cout << "!!!!" << sum[0] << sum[1] << sum[2] << sum[3] << sum[4]<<endl;
+    begin = std::chrono::steady_clock::now();
+    std::cout << "PowMod: " << algorithm->PowMod(a, b,n) << std::endl;
+    end = std::chrono::steady_clock::now();
+    std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[탎]" << std::endl;    
 }

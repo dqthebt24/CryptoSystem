@@ -267,7 +267,7 @@ void BigInt::operator=(const BigInt& n)
 	this->mDigits[this->len] = '\0';
 }
 
-bool BigInt::operator>(const BigInt& n)
+bool BigInt::operator>(const BigInt& n) const
 {
 	bool result = false;
 	size_t len = this->len;
@@ -311,7 +311,7 @@ bool BigInt::operator==(const BigInt& n) const
 	return result;
 }
 
-bool BigInt::operator>=(const BigInt& n)
+bool BigInt::operator>=(const BigInt& n) const
 {
 	return *this > n || *this == n;
 }
