@@ -97,9 +97,8 @@ void main_algorithm()
     std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
 }
 
-void main_prime()
+BigInt genPrime(int bits)
 {
-    int bits = 256;
     std::chrono::steady_clock::time_point begin, end;
     Algorithm* algorithm = Algorithm::GetInstance();
     vector<BigInt> bases{BigInt(5), BigInt(7)};
@@ -138,11 +137,32 @@ void main_prime()
     std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]" << std::endl;
 
     cout << "Prime is: " << prime.getDigits() << endl;
+    return prime;
+}
+
+void main_rsa()
+{
+    std::chrono::steady_clock::time_point begin, end;
+    Algorithm* algorithm = Algorithm::GetInstance();
+
+    int bits = 256;
+    BigInt p, q, n, phi, one("1");
+
+    p = genPrime(256);
+    q = genPrime(256);
+
+    n = algorithm->Mul(p,q);
+
+    cout<<"N = "<<n.getDigits()<<endl;
+
+    phi = algorithm->Mul(p - one, q - one);
+
+    cout<<"Phi = "<<phi.getDigits()<<endl;    
 }
 int main()
 {
     //main_algorithm();
     //main_basic();
-    main_prime();
+    main_rsa();
     return 1;
 }
