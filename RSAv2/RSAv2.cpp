@@ -148,11 +148,13 @@ void main_rsa()
     int bits = 256;
     BigInt p, q, n, phi, one("1");
 
-    p = genPrime(256);
-    q = genPrime(256);
+    p = genPrime(bits);
+    q = genPrime(bits);
 
     n = algorithm->Mul(p,q);
 
+    cout << "P = " << p.getDigits() << endl;
+    cout << "Q = " << q.getDigits() << endl;
     cout<<"N = "<<n.getDigits()<<endl;
 
     phi = algorithm->Mul(p - one, q - one);
