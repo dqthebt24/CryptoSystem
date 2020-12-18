@@ -132,7 +132,106 @@ BigInt Algorithm::PowMod(const BigInt& x, const BigInt& p, const BigInt& n)
     return res;
 }
 
+BigInt Algorithm::Div(const BigInt& x, const BigInt& y)
+{
+    
+    int lenX = (int)x.getLen();
+    int lenY = (int)y.getLen();
+    int diffLen = lenX - lenY;
+
+    if (diffLen == 0) {
+        return x >= y ? BigInt("1") : BigInt("0");
+    } else if (diffLen < 0) {
+        return BigInt("0");
+    } else {
+
+        char* resDigits = new char[diffLen + 2];
+        resDigits[diffLen + 1] = '\0';
+
+        BigInt zero("0");
+
+        auto appendBit = [](char* oldChars, char bit) -> char* {
+            if (oldChars != nullptr) {
+                char* newChars = new char[strlen(oldChars) + 2];
+                memcpy(newChars, oldChars, strlen(oldChars));
+                newChars[strlen(oldChars)] = bit;
+                newChars[strlen(oldChars) + 1] = '\0';
+                delete[] oldChars;
+                return newChars;
+            } else {
+                oldChars = new char[2];
+                oldChars[0] = bit;
+                oldChars[1] = '\0';
+                return oldChars;
+            }
+        };
+
+        auto reAssignBit = [&](BigInt& number) -> char* {
+            char* chars;
+            if (number == zero) {
+                chars = nullptr;
+            } else {
+                chars = new char[number.getLen() + 1];
+                memcpy(chars, number.getDigits(), number.getLen());
+                chars[number.getLen()] = '\0';
+            }
+            return chars;
+        };
+
+        char* tmpDigits = new char[lenY];
+        memcpy(tmpDigits, x.getDigits(), lenY - 1);
+        tmpDigits[lenY - 1] = '\0';
+
+        for (int i = lenY - 1; i < lenX; i++) {
+            tmpDigits = appendBit(tmpDigits, x.getDigits()[i]);
+            BigInt num = BigInt(tmpDigits);
+            num.format();
+            if (num >= y) {
+                resDigits[diffLen - lenX + i + 1] = '1';
+                BigInt sub = num - y;
+
+                delete[] tmpDigits;
+
+                tmpDigits = reAssignBit(sub);
+
+            } else {
+                resDigits[diffLen - lenX + i + 1] = '0';
+            }
+        }
+
+        BigInt res(resDigits);
+
+        if (tmpDigits != nullptr) {
+            delete[] tmpDigits;
+        }
+
+        delete[] resDigits;
+
+        return res;
+    }
+}
+
+//BigInt Algorithm::GetEInverse(const BigInt& e, const BigInt& phi)
+//{
+//    BigInt k("1"), one("1");
+//    while (!(k > phi)) {
+//        k = k + 1;
+//    }
+//}
+
 BigInt Algorithm::GetEInverse(const BigInt& e, const BigInt& phi)
+{
+    BigInt mod = phi % e;
+    BigInt  k("0"), total("1"), zero("0"), one("1");
+
+    while (!(total == zero)) {
+        k = k + one;
+        total = (total + mod) % e;
+    }
+    return Div(Mul(k, phi) + one, e);
+}
+
+/*BigInt Algorithm::GetEInverse(const BigInt& e, const BigInt& phi)
 {
     BigInt phiTwoComplement = phi.getTwoComplement();
     BigInt u = phi, v = e, A("1"), B("0"), C("0"), D("1"), zero("0");
@@ -183,4 +282,4 @@ BigInt Algorithm::GetEInverse(const BigInt& e, const BigInt& phi)
     }
 
     return D;
-}
+}*/

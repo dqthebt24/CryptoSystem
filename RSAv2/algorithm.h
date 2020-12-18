@@ -53,5 +53,15 @@ public:
 	 * \return d
 	 */
 	BigInt GetEInverse(const BigInt& e, const BigInt& phi);
+
+	/**
+	 * \brief Function calculate x/y
+	 * \details This version only for x >= y
+	 *
+	 * \param x A binary number
+	 * \param y A binary number
+	 * \return The binary result
+	 */
+	BigInt Div(const BigInt& x, const BigInt&y);
 };
 

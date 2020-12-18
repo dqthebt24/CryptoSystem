@@ -145,8 +145,9 @@ void main_rsa()
     std::chrono::steady_clock::time_point begin, end;
     Algorithm* algorithm = Algorithm::GetInstance();
 
-    int bits = 128;
+    int bits = 256;
     BigInt p, q, n, phi, one("1"), e("10000000000000001"); // e = 65537
+    BigInt m(100);
 
     p = genPrime(bits);
     q = genPrime(bits);
@@ -167,6 +168,19 @@ void main_rsa()
 
     cout << "d = " << d.getDigits() << endl;
     std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]" << std::endl;
+
+    cout << "M_org = " << m.getDigits() << endl;
+    begin = std::chrono::steady_clock::now();
+    BigInt m_enc = algorithm->PowMod(m, e, n);
+    end = std::chrono::steady_clock::now();
+    cout << "M_enc = " << m_enc.getDigits() << endl;
+    std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]" << std::endl;
+
+    begin = std::chrono::steady_clock::now();
+    BigInt m_dec = algorithm->PowMod(m_enc, d, n);
+    end = std::chrono::steady_clock::now();
+    cout << "M_dec = " << m_dec.getDigits() << endl;
+    std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]" << std::endl;
 }
 
 void main_inverse()
@@ -174,22 +188,36 @@ void main_inverse()
     std::chrono::steady_clock::time_point begin, end;
     Algorithm* algorithm = Algorithm::GetInstance();
 
-    BigInt e("101"), phi(4);
+    BigInt e("10000000000000001"), phi(512);
+
+    cout << "phi = " << phi.getDigits() << endl;
 
     begin = std::chrono::steady_clock::now();
     BigInt d = algorithm->GetEInverse(e, phi);
     end = std::chrono::steady_clock::now();
 
-    cout << "phi = " << phi.getDigits() << endl;
 
     cout << "d = " << d.getDigits() << endl;
     std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]" << std::endl;
+
+    /* Test Div
+    BigInt x(20);
+    sleepcp(1000);
+    BigInt y("10000000000000001"), r;
+
+    begin = std::chrono::steady_clock::now();
+    r = algorithm->Div(x, y);
+    cout << "x = " << x.getDigits() << endl;
+    cout << "y = " << y.getDigits() << endl;
+    end = std::chrono::steady_clock::now();
+    cout << "r = " << r.getDigits() << endl;
+    std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]" << std::endl;*/
 }
 int main()
 {
     //main_algorithm();
     //main_basic();
-    //main_rsa();
-    main_inverse();
+    main_rsa();
+    //main_inverse();
     return 1;
 }

@@ -12,7 +12,6 @@ private:
 	void _firstComplement(char* digits) const;
 	void _shiftLeft(const int bits, const bool useFormat = true);
 	void _shiftRight(const int bits, const bool useFormat = true);
-	void format();
 	int _len() {return (int)strlen(mDigits);}
 
 public:
@@ -44,4 +43,5 @@ public:
 
 	// Others
 	BigInt getTwoComplement() const;
+	void format();
 };
