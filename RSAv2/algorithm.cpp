@@ -131,3 +131,56 @@ BigInt Algorithm::PowMod(const BigInt& x, const BigInt& p, const BigInt& n)
 
     return res;
 }
+
+BigInt Algorithm::GetEInverse(const BigInt& e, const BigInt& phi)
+{
+    BigInt phiTwoComplement = phi.getTwoComplement();
+    BigInt u = phi, v = e, A("1"), B("0"), C("0"), D("1"), zero("0");
+
+    auto isEven = [](BigInt* num) -> bool {
+        return num->getDigits()[(int)num->getLen() - 1] == '0';
+    };
+    cout << "x:" << phi.getDigits()<<"; y:"<<e.getDigits() << endl;
+    while (u > zero) {
+        cout << "u: " << u.getDigits() << endl;
+        cout << "WHILE 1" << endl;
+        while (isEven(&u)) {// while phi even
+            u = u >> 1;
+            cout << "   u: " << u.getDigits() << endl;
+            cout << "   A: " << A.getDigits() << "; B: " << B.getDigits() << endl;
+            if (isEven(&A) && isEven(&B)) {
+                cout << "     do 1\n";
+                A = A >> 1;
+                B = B >> 1;
+            } else {
+                cout << "     do 2\n";
+                A = ((A + e) >> 1);
+                B = (B + phiTwoComplement) >> 1;
+            }
+        }
+        cout << "WHILE 2" << endl;
+
+        while (isEven(&v)) {// while v even
+            v = v >> 1;
+            if (isEven(&C) && isEven(&D)) {
+                C = C >> 1;
+                D = D >> 1;
+            } else {
+                C = ((C + e) >> 1);
+                D = ((D + phiTwoComplement) >> 1);
+            }
+        }
+
+        if (u >= v) {
+            u = u - v;
+            A = A - C;
+            B = B - D;
+        } else {
+            v = v - u;
+            C = C - A;
+            D = D - B;
+        }
+    }
+
+    return D;
+}

@@ -99,7 +99,7 @@ vector<BigInt> BigInt::_split(const BigInt& n, const int width) const
 	return result;
 }
 
-void BigInt::_firstComplement(char* digits)
+void BigInt::_firstComplement(char* digits) const
 {
 	if (digits != nullptr) {
 		for (size_t i = 0; i < strlen(digits); i++) {
@@ -162,9 +162,14 @@ void BigInt::format()
 		}
 		if (count > 0) {
 			this->len = this->len - count;
-			this->mDigits = new char[this->len + 1];
-			memcpy(this->mDigits, tmp + count, this->len + 1);
-			this->mDigits[this->len] = '\0';
+			if (this->len == 0) {
+				this->mDigits = new char[1];
+				this->mDigits[0] = '0';
+			} else {
+				this->mDigits = new char[this->len + 1];
+				memcpy(this->mDigits, tmp + count, this->len + 1);
+				this->mDigits[this->len] = '\0';
+			}
 
 			delete[] tmp;
 		}
@@ -316,6 +321,17 @@ bool BigInt::operator>=(const BigInt& n) const
 	return *this > n || *this == n;
 }
 
+BigInt BigInt::getTwoComplement() const
+{
+	char* digits = new char[this->len + 1];
+	memcpy(digits, this->mDigits, this->len);
+	digits[this->len] = '\0';
+
+	_firstComplement(digits);
+
+	return BigInt(digits) + BigInt("1");
+}
+
 BigInt BigInt::operator%(const BigInt& n) const
 {
 	// Calculate 2^Width(Y) mod Y
@@ -418,7 +434,7 @@ BigInt BigInt::operator-(const BigInt& n)
 	return res;
 }
 
-BigInt BigInt::operator>>(const int bits)
+BigInt BigInt::operator>>(const int bits) const
 {
 	if (this->len == 0 || this->mDigits == nullptr) {
 		return BigInt(this->mDigits);
@@ -428,7 +444,7 @@ BigInt BigInt::operator>>(const int bits)
 	return res;
 }
 
-BigInt BigInt::operator<<(const int bits)
+BigInt BigInt::operator<<(const int bits) const
 {
 	BigInt res(this->mDigits);
 	char* tmp = new char[this->len + bits + 1];

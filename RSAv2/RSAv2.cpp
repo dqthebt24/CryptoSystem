@@ -145,8 +145,8 @@ void main_rsa()
     std::chrono::steady_clock::time_point begin, end;
     Algorithm* algorithm = Algorithm::GetInstance();
 
-    int bits = 256;
-    BigInt p, q, n, phi, one("1");
+    int bits = 128;
+    BigInt p, q, n, phi, one("1"), e("10000000000000001"); // e = 65537
 
     p = genPrime(bits);
     q = genPrime(bits);
@@ -159,12 +159,37 @@ void main_rsa()
 
     phi = algorithm->Mul(p - one, q - one);
 
-    cout<<"Phi = "<<phi.getDigits()<<endl;    
+    cout<<"Phi = "<<phi.getDigits()<<endl;
+
+    begin = std::chrono::steady_clock::now();
+    BigInt d = algorithm->GetEInverse(e, phi);
+    end = std::chrono::steady_clock::now();
+
+    cout << "d = " << d.getDigits() << endl;
+    std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]" << std::endl;
+}
+
+void main_inverse()
+{
+    std::chrono::steady_clock::time_point begin, end;
+    Algorithm* algorithm = Algorithm::GetInstance();
+
+    BigInt e("101"), phi(4);
+
+    begin = std::chrono::steady_clock::now();
+    BigInt d = algorithm->GetEInverse(e, phi);
+    end = std::chrono::steady_clock::now();
+
+    cout << "phi = " << phi.getDigits() << endl;
+
+    cout << "d = " << d.getDigits() << endl;
+    std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]" << std::endl;
 }
 int main()
 {
     //main_algorithm();
     //main_basic();
-    main_rsa();
+    //main_rsa();
+    main_inverse();
     return 1;
 }
