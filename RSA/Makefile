@@ -1,17 +1,42 @@
 CC=g++
-CFLAGS=-I .
-OUTPUT=rsa
-BUILD_DIR=Debug
-SRC_DIR=./
-SRC_FILES=$(wildcard $(SRC_DIR)/*.cpp)
-BUILD_DIR=Debug
-OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%.o,$(SRC_FILES))
 
+EXE_FILE=rsa
 
-$(BUILD_DIR)/$(OUTPUT):$(OBJ_FILES)
+UTEST_FILE=unittest
+UTEST_DIR=../source/unittest/tests
+
+INC_DIR =../source/include
+SRC_DIR=../source/src
+
+CFLAGS=-I$(INC_DIR)
+OUT_DIR=.
+
+SRC_FILES = $(wildcard $(SRC_DIR)/*.cpp)
+OBJ = $(patsubst $(SRC_DIR)/%.cpp,$(OUT_DIR)/%.o,$(SRC_FILES))
+
+CXXFLAGS = -g -Wall -Werror
+
+$(OUT_DIR)/%.o: $(SRC_DIR)/%.cpp
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+$(OUT_DIR)/$(EXE_FILE): $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
-	$(CC) -c -o $@ $<
+
+.PHONY: clean_all clean_unittest clean
 
 clean:
-	rm -f $(BUILD_DIR)/*.o $(BUILD_DIR)/$(OUTPUT)
+	rm -f $(OUT_DIR)/*.o *~ core $(EXE_FILE)
+clean_unittest:
+	rm $(UTEST_FILE)
+
+clean_all: clean clean_unittest
+
+.PHONY: unittest
+
+unittest:
+	$(CC) -c $(SRC_DIR)/*.cpp $(CFLAGS)
+	rm -f RSA.o
+	$(CC) -c $(UTEST_DIR)/*.cpp $(CFLAGS) -I../source/unittest
+	$(CC) -o $(UTEST_FILE) *.o -lgtest -lpthread
+
+
