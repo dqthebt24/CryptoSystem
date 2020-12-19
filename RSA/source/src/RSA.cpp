@@ -17,7 +17,7 @@ void sleepcp(int milliseconds) // Cross-platform sleep function
 
 void main_basic()
 {
-    int bits = 512;
+    int bits = 1024;
     std::chrono::steady_clock::time_point begin, end;
     begin = std::chrono::steady_clock::now();
     BigInt a(bits);
@@ -70,9 +70,9 @@ void main_algorithm()
 
     BigInt a(bits);
     sleepcp(1000);
-    BigInt b(bits);
+    BigInt b(512);
     sleepcp(1000);
-    BigInt c(bits);
+    BigInt c(512);
 
     cout << "A= " << a.getDigits() << endl;
     cout << "B= " << b.getDigits() << endl;
@@ -85,15 +85,27 @@ void main_algorithm()
     std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[탎]" << std::endl;
 
     begin = std::chrono::steady_clock::now();
-    BigInt d = algorithm->MulMod(a, b, c);
+    BigInt mul = algorithm->Mul(a, b);
     end = std::chrono::steady_clock::now();
-    cout << "D= " << d.getDigits() << endl;
+    cout << "Mul= " << mul.getDigits() << endl;
     std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[탎]" << std::endl;
 
     begin = std::chrono::steady_clock::now();
-    BigInt e = algorithm->PowMod(a, b, c);
+    BigInt mulMod = algorithm->MulMod(a, b, c);
     end = std::chrono::steady_clock::now();
-    cout << "E= " << d.getDigits() << endl;
+    cout << "MulMod= " << mulMod.getDigits() << endl;
+    std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[탎]" << std::endl;
+
+    begin = std::chrono::steady_clock::now();
+    BigInt powMod = algorithm->PowMod(a, b, c);
+    end = std::chrono::steady_clock::now();
+    cout << "PowMod= " << powMod.getDigits() << endl;
+    std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[탎]" << std::endl;
+
+    begin = std::chrono::steady_clock::now();
+    BigInt div = algorithm->Div(a, b);
+    end = std::chrono::steady_clock::now();
+    cout << "Div= " << div.getDigits() << endl;
     std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[탎]" << std::endl;
 }
 
@@ -215,9 +227,9 @@ void main_inverse()
 }
 int main()
 {
-    //main_algorithm();
+    main_algorithm();
     //main_basic();
-    main_rsa();
+    //main_rsa();
     //main_inverse();
     return 1;
 }
