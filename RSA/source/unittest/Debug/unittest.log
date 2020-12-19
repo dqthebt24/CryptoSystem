@@ -1,4 +1,0 @@
-﻿  pch.cpp
-  test_init.cpp
-RSA.lib(bigint.obj) : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
-  unittest.vcxproj -> F:\Source\Git\CryptoSystem\RSA\Debug\unittest.exe
