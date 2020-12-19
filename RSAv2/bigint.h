@@ -9,10 +9,9 @@ private:
 	char* mDigits;
 	size_t len;
 	vector<BigInt> _split(const BigInt& n, const int width) const;
-	void _firstComplement(char* digits);
+	void _firstComplement(char* digits) const;
 	void _shiftLeft(const int bits, const bool useFormat = true);
 	void _shiftRight(const int bits, const bool useFormat = true);
-	void format();
 	int _len() {return (int)strlen(mDigits);}
 
 public:
@@ -25,7 +24,7 @@ public:
 	void setDigits(char* digits) {this->mDigits = digits;}
 	void setLen(size_t len) {this->len = len;}
 
-	size_t getLen() { return len; }
+	size_t getLen() const { return len; }
 	char* getDigits() const { return mDigits; }
 
 	// Calculations
@@ -34,11 +33,15 @@ public:
 	void operator+=(const BigInt& n);
 	BigInt operator%(const BigInt& n) const;
 	BigInt operator-(const BigInt& n);
-	BigInt operator>>(const int bits);
-	BigInt operator<<(const int bits);
+	BigInt operator>>(const int bits) const;
+	BigInt operator<<(const int bits) const;
 
 	// Comparations
 	bool operator>(const BigInt& n) const;
 	bool operator==(const BigInt& n) const;
 	bool operator>=(const BigInt& n) const;
+
+	// Others
+	BigInt getTwoComplement() const;
+	void format();
 };
