@@ -15,28 +15,25 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="algorithm.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="bigInteger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RSA.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClInclude Include="source\include\algorithm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\bigint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\define.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="define.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="calculator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="algorithm.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="biginteger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClCompile Include="source\src\algorithm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\bigint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\RSA.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
