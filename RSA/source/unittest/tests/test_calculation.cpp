@@ -9,9 +9,8 @@ TEST(TestCalculation, SmallNumber)
 	EXPECT_EQ(true, one == (zero + one));
 	EXPECT_EQ(true, two == (one + one));
 
-	//TDDB[unittest] EXPECT_EQ(true, zero == (one - one));
-	//EXPECT_EQ(true, zero == (zero - zero));
-	//EXPECT_EQ(true, zero == (two - two));
+	EXPECT_EQ(true, zero == (zero - zero));
+	EXPECT_EQ(true, zero == (two - two));
 
 	// Not equal bits
 	EXPECT_EQ(true, two == (three - one));

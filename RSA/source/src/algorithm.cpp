@@ -2,6 +2,7 @@
 #include <cstring>
 #include <string>
 #include <time.h>
+#include "define.h"
 #include "algorithm.h"
 
 #include <iostream>
@@ -103,18 +104,17 @@ BigInt Algorithm::MulMod(const BigInt& x, const BigInt& y, const BigInt& n)
 
 BigInt Algorithm::PowMod(const BigInt& x, const BigInt& p, const BigInt& n)
 {
-    BigInt res("1");
-    BigInt zero("0");
-
-    if (!(n > zero) || !(x > zero) || !(p > zero)) {
-        return zero;
+    if (!(n > ZERO)) {
+        return ZERO;
+    } else if (!(p > ZERO)) {
+        return ONE % n;
+    } else if (p == ONE) {
+        return x % n;
+    } else if (x == ZERO) {
+        return ZERO;
     }
 
-    if (p == zero) {
-        return res;
-    }
-
-    BigInt znX = x;
+    BigInt znX = x, res("1");
     char* strP = p.getDigits();
     int lenP = (int)strlen(strP);
 
@@ -206,7 +206,7 @@ BigInt Algorithm::Div(const BigInt& x, const BigInt& y)
         }
 
         delete[] resDigits;
-
+        res.format();
         return res;
     }
 }

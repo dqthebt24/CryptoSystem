@@ -17,7 +17,7 @@ private:
 public:
 	BigInt();
 	BigInt(const int numDigits);
-	BigInt(const char* digits);
+	BigInt(const char* digits, bool isAutoFormat = false);
 	BigInt(const BigInt& bigInt);
 	~BigInt();
 

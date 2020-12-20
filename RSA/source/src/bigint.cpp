@@ -59,9 +59,12 @@ BigInt::BigInt(const BigInt& bigInt)
 	cloneNumber(this, bigInt.mDigits, bigInt.len);
 }
 
-BigInt::BigInt(const char* digits)
+BigInt::BigInt(const char* digits, bool isAutoFormat)
 {
 	cloneNumber(this, digits, strlen(digits));
+	if (isAutoFormat) {
+		this->format();
+	}
 }
 
 vector<BigInt> BigInt::_split(const BigInt& n, const int width) const
@@ -400,6 +403,10 @@ BigInt BigInt::operator%(const BigInt& n) const
  */
 BigInt BigInt::operator-(const BigInt& n)
 {
+	if (*this == n) {
+		return ZERO;
+	}
+
 	char* digits = new char[n.len + 1];
 	memcpy(digits, n.mDigits, n.len);
 	digits[n.len] = '\0';
