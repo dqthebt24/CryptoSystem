@@ -346,17 +346,17 @@ BigInt BigInt::operator%(const BigInt& n) const
 	BigInt mod = BigInt(modChars) - n;
 	delete[] modChars;
 
-	auto _shiftLeftOne = [](BigInt* num) -> void {
-		if (num->mDigits[0] == '0') {
-			num->_shiftLeft(1, false);
+	auto _shiftLeftOne = [](BigInt& num) -> void {
+		if (num.mDigits[0] == '0') {
+			num._shiftLeft(1, false);
 		} else {
-			char* tmp = new char[num->len + 2];
-			memcpy(tmp, num->mDigits, num->len);
-			tmp[num->len] = '0';
-			tmp[num->len + 1] = '\0';
-			delete[] num->mDigits;
-			num->mDigits = tmp;
-			num->len = num->len + 1;
+			char* tmp = new char[num.len + 2];
+			memcpy(tmp, num.mDigits, num.len);
+			tmp[num.len] = '0';
+			tmp[num.len + 1] = '\0';
+			delete[] num.mDigits;
+			num.mDigits = tmp;
+			num.len = num.len + 1;
 		}
 	};
 
@@ -366,7 +366,7 @@ BigInt BigInt::operator%(const BigInt& n) const
 	while (N > 0) {
 		BigInt T = g[N];
 		for (size_t i = 0; i < lenN; i++) {
-			_shiftLeftOne(&T);
+			_shiftLeftOne(T);
 			while (T.len > lenN && T.mDigits[0] == '1') {
 				T.mDigits[0] = '0';
 				T += mod;
