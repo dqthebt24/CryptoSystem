@@ -3,27 +3,6 @@
 
 using namespace std;
 
-number_t gcdExtended(number_t a, number_t b, number_t& x, number_t& y)  
-{  
-    // Base Case  
-    if (a == 0)  
-    {  
-        x = 0;  
-        y = 1;  
-        return b;  
-    }  
-  
-    number_t x1, y1; // To store results of recursive call  
-    number_t gcd = gcdExtended(b%a, a, x1, y1);  
-  
-    // Update x and y using results of  
-    // recursive call  
-    x = y1 - (b/a) * x1;  
-    y = x1;  
-  
-    return gcd;  
-}  
-
 void main_calculation()
 {
 	int bits = 1024;
@@ -72,29 +51,32 @@ string toBinary(const number_t& n)
     return r;
 }
 
-number_t CrtDecrypt(const number_t& c, const number_t& d, const number_t&n, const number_t& p, const number_t& q)
+number_t CrtDecrypt(const number_t& c, const number_t& d, const number_t& n, const number_t& p, const number_t& q)
 {
+	cout << "CRT Decrypt================!\n";
 	Algorithm* algorithm = Algorithm::GetInstance();
 	number_t dp = d % (p - 1);
 	number_t dq = d % (q - 1);
-	number_t v, y;
-	gcdExtended(p, q, v, y);
+	number_t v, y, g;
+	algorithm->AlgBinaryBezout(p, q, v, y, g);
 
-	cout<<"v = "<< v <<endl;
-	cout<<"y = "<< y <<endl;
+	cout << "v = " << v << endl;
+	cout << "y = " << y << endl;
 
-	number_t res = algorithm->PowMod(c, dp, n) + algorithm->MulMod(algorithm->MulMod(p,v,n), (algorithm->PowMod(c, dq, n) - algorithm->PowMod(c, dp, n)), n);
+	number_t res = algorithm->PowMod(c, dp, n) + algorithm->MulMod(algorithm->MulMod(p, v, n), (algorithm->PowMod(c, dq, n) - algorithm->PowMod(c, dp, n)), n);
+
+	cout << "End CRT Decrypt=============!\n";
 	return res % n;
 }
-
 
 void main_rsa()
 {
 	Algorithm* algorithm = Algorithm::GetInstance();
 	std::chrono::steady_clock::time_point begin, end;
 
-	number_t p = algorithm->GenPrime(1024);
-	number_t q = algorithm->GenPrime(1024);
+	number_t p = algorithm->GenPrime(512);
+	sleepcp(1000);
+	number_t q = algorithm->GenPrime(512);
 
 	number_t n = p * q;
 	number_t phi = (p - 1)*(q - 1);
@@ -107,18 +89,19 @@ void main_rsa()
 	cout<< "n = "<< n <<endl;
 	cout<< "phi = "<< phi <<endl;
 
-	number_t d, y;
 
-	cout<<"GCD = "<<gcdExtended(e, phi, d, y)<<endl;
+	number_t d, tmp, g;
+	algorithm->AlgBinaryBezout(e, phi, d, tmp, g);
+	cout << "GCD: " << g << endl;
+	cout << "d: " << d << endl;
+	cout << "tmp: " << tmp << endl;
 
-	cout<<"d = "<< d <<endl;
-	cout<<"y = "<< y <<endl;
+	number_t inv = algorithm->GetEInverse(e, phi);
+	cout << "inv: " << inv << endl;
 
-	cout<<"D binary: "<<toBinary(d)<<endl;
+	number_t m = algorithm->GenerateNumber(1000);
 
-
-	number_t m = algorithm->GenerateNumber(1024);
-
+	cout << "M : " << m << endl;
 	cout<<"M : "<<toBinary(m)<<endl;
 
 	begin = std::chrono::steady_clock::now();
@@ -144,7 +127,13 @@ int main()
 {
 	//main_calculation();
 
-	main_rsa();
+	//main_rsa();
+	std::chrono::steady_clock::time_point begin, end;
+	
+	begin = std::chrono::steady_clock::now();
+	number_t p = Algorithm::GetInstance()->GenStrongPrime(512);
+	end = std::chrono::steady_clock::now();
+	std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
 
 	return 1;
 }

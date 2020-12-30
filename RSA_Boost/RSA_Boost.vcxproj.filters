@@ -26,13 +26,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="algorithm.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="source\include\define.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\include\bigint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\algorithm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

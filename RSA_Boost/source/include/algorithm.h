@@ -66,5 +66,38 @@ public:
 	 * \return The prime
 	 */
 	number_t GenPrime(const int length);
+
+	/**
+	 * \brief Generate strong prime
+	 * 
+	 * \param length
+	 * \return The strong prime 
+	 */
+	number_t GenStrongPrime(const int length);
+
+	/**
+	 * \brief Function calculate d where ed = 1 [mod phi] for RSA
+	 *
+	 * \param e     The e is always a prime, so that gcd(e, phi) = 1
+	 * \param phi   The phi number
+	 * \return d
+	 */
+	number_t GetEInverse(const number_t& e, const number_t& phi);
+
+	/**
+	 * \brief AlgBinaryBezout. 
+	 *  Input a, b. 
+	 *  Output x,y,g = gcd(a,b) | ax + by = g
+	 * 
+	 * \details Follow 1.49 Book 1, page 26
+	 *
+	 * \param a	Number a
+	 * \param b	Number b
+	 * \param x	Number x
+	 * \param y	Number y
+	 * \param g	GCD(a,b)
+	 * \return 
+	 */
+	void AlgBinaryBezout(const number_t& a, const number_t& b, number_t& x, number_t& y, number_t& g);
 };
 

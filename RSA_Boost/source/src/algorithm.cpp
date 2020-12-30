@@ -118,8 +118,8 @@ bool Algorithm::isPrime(number_t n) {
 		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 		number_t res = PowMod(bases[i], n - 1, n);
 		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-		// cout << "   RES: " << res << endl;
-		// std::cout << "   Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
+		 cout << "   RES: " << res << endl;
+		 std::cout << "   Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
 
 		if (res != 1) {
 			return false;
@@ -157,4 +157,80 @@ number_t Algorithm::GenPrime(const int length)
 
 	cout << "Prime is: " << prime << endl;
 	return prime;
+}
+
+number_t Algorithm::GenStrongPrime(const int length)
+{
+	number_t r = GenPrime(length), p, i = 2;
+	bool found = false;
+	while (!found) {
+		cout << "i = " << i << "....\n";
+		p = i * r + 1;
+
+		if (isPrime(p)) {
+			found = true;
+		}
+
+		i <<= 1;
+	}
+	cout << "R = " << r << "; P = " << p << "; i = " << i << endl;
+	return p;
+}
+
+number_t Algorithm::GetEInverse(const number_t& e, const number_t& phi)
+{
+	number_t mod = phi % e;
+	number_t  k = 0, total = 1;
+
+	while (total != 0) {
+		k = k + 1;
+		total = (total + mod) % e;
+	}
+	return (k * phi + 1) / e;
+}
+
+void Algorithm::AlgBinaryBezout(const number_t& a, const number_t& b, number_t& x, number_t& y, number_t& g)
+{
+	g = 1;
+	number_t ta = a, tb = b, u = a, v = b, A = 1, B = 0, C = 0, D = 1;
+	while (ta % 2 == 0 && tb % 2 == 0) {
+		ta >>= 1;
+		tb >> 1;
+		g <<= 1;
+	}
+
+	while (u > 0) {
+		while (u % 2 == 0) {
+			u >>= 1;
+			if (A % 2 == 0 && B % 2 == 0) {
+				A >>= 1;
+				B >>= 1;
+			} else {
+				A = (A + b) / 2;
+				B = (B - a) / 2;
+			}
+		}
+		while (v % 2 == 0) {
+			v >>= 1;
+			if (C % 2 == 0 && D % 2 == 0) {
+				C >>= 1;
+				D >>= 1;
+			} else {
+				C = (C + b) / 2;
+				D = (D - a) / 2;
+			}
+		}
+		if (u >= v) {
+			u = u - v;
+			A = A - C;
+			B = B - D;
+		} else {
+			v = v - u;
+			C = C - A;
+			D = D - B;
+		}
+	}
+	x = C;
+	y = D;
+	g = g * v;
 }
