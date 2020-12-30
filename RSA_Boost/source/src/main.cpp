@@ -46,7 +46,7 @@ int main()
 	Algorithm* algorithm = Algorithm::GetInstance();
 
 	for (int i = 0; i < 3; i++) {
-		algorithm->GenPrime(512);
+		algorithm->GenPrime(1024);
 	}
 
 	return 1;

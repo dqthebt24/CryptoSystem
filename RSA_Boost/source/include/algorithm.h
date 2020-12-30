@@ -12,6 +12,15 @@ private:
 
 	number_t binaryToDecimal(std::string n);
 
+	/**
+	 * \brief isPrime for testing if a number is a prime
+	 * \details 
+	 * 
+	 * \param n The number to check
+	 * \return true if the number is prime, else return false
+	 */
+	bool isPrime(number_t n);
+
 public:
 	static Algorithm* GetInstance();
 	/**
