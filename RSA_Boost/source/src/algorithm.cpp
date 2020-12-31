@@ -5,6 +5,30 @@ using namespace std;
 
 Algorithm* Algorithm::mInstance = nullptr;
 
+void Algorithm::genKey(const number_t& p, const number_t& q, const number_t& phi, const number_t& n, number_t& e, number_t& d)
+{
+	number_t t{ "10922" }, tmp, g; // 6t+5 = 65537
+
+	while (1) {
+		e = 6 * t + 1;
+		if (isPrime(e)) {
+			AlgBinaryBezout(e, phi, d, tmp, g);
+			if (d * d >= n) {
+				break;
+			}
+		}
+
+		e = 6 * t + 5;
+		if (isPrime(e)) {
+			AlgBinaryBezout(e, phi, d, tmp, g);
+			if (d * d >= n) {
+				break;
+			}
+		}
+		t += 1;
+	}
+}
+
 Algorithm* Algorithm::GetInstance()
 {
 	if (mInstance == nullptr) {
@@ -149,7 +173,7 @@ number_t Algorithm::GenPrime(const int length)
 			break;
 		}
 
-		tmp += 2;
+		tmp += 1;
 	}
 
 	end = std::chrono::steady_clock::now();
@@ -288,9 +312,11 @@ RSA_INFO Algorithm::RsaGenKey(const int len)
 
 	number_t n = p * q;
 	number_t phi = (p - 1)*(q - 1);
-	number_t e{"65537"}, d, tmp, g;
+	/*number_t e{"65537"}, d, tmp, g;
+	AlgBinaryBezout(e, phi, d, tmp, g);*/
 
-	AlgBinaryBezout(e, phi, d, tmp, g);
+	number_t e, d;
+	genKey(p, q, phi, n, e, d);
 
 	return RSA_INFO(p, q, n, phi, e, d);
 }

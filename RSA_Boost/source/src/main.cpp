@@ -109,12 +109,8 @@ void main_cmp()
 	std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
 }
 
-int main()
+void main_rsa()
 {
-	// main_calculation();
-
-	//main_cmp();
-
 	std::chrono::steady_clock::time_point begin, end;
 	begin = std::chrono::steady_clock::now();
 	RSA_INFO info = Algorithm::GetInstance()->RsaGenKey(1024);
@@ -127,7 +123,7 @@ int main()
 	std::cout << "phi = " << info.phi << std::endl;
 	std::cout << "e = " << info.e << std::endl;
 	std::cout << "d = " << info.d << std::endl;
-	
+
 	number_t m = Algorithm::GetInstance()->GenerateNumber(512);
 	std::cout << "M: " << m << std::endl;
 
@@ -142,6 +138,14 @@ int main()
 	end = std::chrono::steady_clock::now();
 	std::cout << "Decrypted: " << dec << std::endl;
 	std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << MICRO_S << std::endl;
+}
+int main()
+{
+	// main_calculation();
+
+	//main_cmp();
+
+	main_rsa();
 
 	return 1;
 }

@@ -34,6 +34,17 @@ private:
 	 */
 	bool isPrime(number_t n);
 
+	/**
+	 * \brief Generate e and d for RSA
+	 * 
+	 * \param p The prime p
+	 * \param q The prime q
+	 * \param n The number phi
+	 * \param n p*q
+	 * \return e and d
+	 */
+	void genKey(const number_t& p, const number_t& q, const number_t& phi, const number_t& n, number_t&e, number_t& d);
+
 public:
 	static Algorithm* GetInstance();
 
