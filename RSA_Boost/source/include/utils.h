@@ -1,10 +1,18 @@
 #pragma once
 #include <chrono>
+#include "algorithm.h"
 
-void sleepcp(int milliseconds) // Cross-platform sleep function
-{
-    clock_t time_end;
-    time_end = clock() + milliseconds * CLOCKS_PER_SEC / 1000;
-    while (clock() < time_end) {
-    }
-}
+/**
+ * \brief Convert number_t to binary string
+ * 
+ * \param n The number to be converted
+ * \return The binary string
+ */
+std::string NumToBinary(const number_t& n);
+
+/**
+ * \brief Cross-platform sleep function
+ * 
+ * \param milliseconds The number of m-seconds
+ */
+void sleepcp(int milliseconds); // Cross-platform sleep function

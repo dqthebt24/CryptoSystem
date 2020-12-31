@@ -1,3 +1,6 @@
+#include <vector>
+
+#include "define.h"
 #include "utils.h"
 #include "algorithm.h"
 
@@ -39,44 +42,14 @@ void main_calculation()
 	std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[탎]" << std::endl;
 }
 
-string toBinary(const number_t& n)
-{
-    string r;
-    number_t tmp = n;
-    while(tmp != 0)
-    {
-        r = (tmp % 2 == 0 ? "0":"1") + r;
-        tmp /= 2;
-    }
-    return r;
-}
-
-number_t CrtDecrypt(const number_t& c, const number_t& d, const number_t& n, const number_t& p, const number_t& q)
-{
-	cout << "CRT Decrypt================!\n";
-	Algorithm* algorithm = Algorithm::GetInstance();
-	number_t dp = d % (p - 1);
-	number_t dq = d % (q - 1);
-	number_t v, y, g;
-	algorithm->AlgBinaryBezout(p, q, v, y, g);
-
-	cout << "v = " << v << endl;
-	cout << "y = " << y << endl;
-
-	number_t res = algorithm->PowMod(c, dp, n) + algorithm->MulMod(algorithm->MulMod(p, v, n), (algorithm->PowMod(c, dq, n) - algorithm->PowMod(c, dp, n)), n);
-
-	cout << "End CRT Decrypt=============!\n";
-	return res % n;
-}
-
 void main_rsa()
 {
 	Algorithm* algorithm = Algorithm::GetInstance();
 	std::chrono::steady_clock::time_point begin, end;
 
-	number_t p = algorithm->GenPrime(512);
+	number_t p = algorithm->GenPrime(1024);
 	sleepcp(1000);
-	number_t q = algorithm->GenPrime(512);
+	number_t q = algorithm->GenPrime(1024);
 
 	number_t n = p * q;
 	number_t phi = (p - 1)*(q - 1);
@@ -91,18 +64,31 @@ void main_rsa()
 
 
 	number_t d, tmp, g;
+	begin = std::chrono::steady_clock::now();
 	algorithm->AlgBinaryBezout(e, phi, d, tmp, g);
+	end = std::chrono::steady_clock::now();
 	cout << "GCD: " << g << endl;
 	cout << "d: " << d << endl;
+	cout << "d^4 > n: " << (d*d*d*d > n) << endl;
 	cout << "tmp: " << tmp << endl;
+	std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[탎]" << std::endl;
 
-	number_t inv = algorithm->GetEInverse(e, phi);
-	cout << "inv: " << inv << endl;
+	begin = std::chrono::steady_clock::now();
+	number_t inv1 = algorithm->GetEInverse(e, phi);
+	end = std::chrono::steady_clock::now();
+	cout << "Inv1 : " << inv1 << endl;
+	std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[탎]" << std::endl;
+
+	begin = std::chrono::steady_clock::now();
+	number_t inv2 = algorithm->GetInverse(e, phi);
+	end = std::chrono::steady_clock::now();
+	cout << "Inv2 : " << inv2 << endl;
+	std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[탎]" << std::endl;
 
 	number_t m = algorithm->GenerateNumber(1000);
 
 	cout << "M : " << m << endl;
-	cout<<"M : "<<toBinary(m)<<endl;
+	cout<<"M : "<<NumToBinary(m)<<endl;
 
 	begin = std::chrono::steady_clock::now();
 	number_t enc = algorithm->PowMod(m, e, n);
@@ -117,7 +103,7 @@ void main_rsa()
 	std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[탎]" << std::endl;
 
 	begin = std::chrono::steady_clock::now();
-	number_t dec1 = CrtDecrypt(enc, d, n, p, q);
+	number_t dec1 = algorithm->RsaDecryptCrt(enc, d, n, p, q);
 	end = std::chrono::steady_clock::now();
 	cout << "Decrypt1 : " << dec1 << endl;
 	std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[탎]" << std::endl;
@@ -125,15 +111,16 @@ void main_rsa()
 
 int main()
 {
-	//main_calculation();
+	// main_calculation();
 
-	//main_rsa();
-	std::chrono::steady_clock::time_point begin, end;
+	main_rsa();
 	
-	begin = std::chrono::steady_clock::now();
-	number_t p = Algorithm::GetInstance()->GenStrongPrime(512);
-	end = std::chrono::steady_clock::now();
-	std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[탎]" << std::endl;
+	// std::chrono::steady_clock::time_point begin, end;	
+	// begin = std::chrono::steady_clock::now();
+	// number_t p = Algorithm::GetInstance()->GenStrongPrime(512);
+	// cout<<"P = "<<p<<endl;
+	// end = std::chrono::steady_clock::now();
+	// std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[탎]" << std::endl;
 
 	return 1;
 }

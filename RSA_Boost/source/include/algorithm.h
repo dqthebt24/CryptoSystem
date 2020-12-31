@@ -6,6 +6,18 @@
 namespace mp = boost::multiprecision;
 typedef mp::number<mp::cpp_int_backend<4096, 4096, mp::signed_magnitude, mp::unchecked, void> >  number_t; // int4096_t
 
+struct RSA_INFO{
+	number_t p, q, n, phi, e, d;
+
+	RSA_INFO(number_t _p, number_t _q, number_t _n, number_t _phi, number_t _e, number_t _d) {
+		p = _p;
+		q = _q;
+		phi = _phi;
+		e = _e;
+		d = _d;
+	}
+};
+
 class Algorithm {
 private:
 	static Algorithm* mInstance;
@@ -23,6 +35,7 @@ private:
 
 public:
 	static Algorithm* GetInstance();
+
 	/**
 	 * \brief Generate a binary string with size is 'length'
 	 *
@@ -85,7 +98,32 @@ public:
 	number_t GetEInverse(const number_t& e, const number_t& phi);
 
 	/**
-	 * \brief AlgBinaryBezout. 
+	 * \brief Find x that ax = 1 [mod b]
+	 * \details a, b are arbitrary numbers
+	 * 
+	 * \param a The first number
+	 * \param b The second number
+	 * 
+	 * \return Number x
+	 */
+	number_t GetInverse(const number_t& a, const number_t& b);
+
+	/**
+	 * \brief Solve Chinese Remainder Theorem.
+	 * 
+	 * Find x where x = a1 [mod n1], x = a2 [mod n2], ....
+	 * 
+	 * \details 
+	 * 
+	 * \param lstN Array numbers lstN = [n1, n2, ..., nk]
+	 * \param lstA Array numbers lstA = [a1, a2, ..., ak]
+	 * 
+	 * \return The solution x
+	 */
+	number_t SolveCrt(const std::vector<number_t> lstN, const std::vector<number_t> lstA);
+
+	/**
+	 * \brief Binary Bezout algorithm
 	 *  Input a, b. 
 	 *  Output x,y,g = gcd(a,b) | ax + by = g
 	 * 
@@ -99,5 +137,27 @@ public:
 	 * \return 
 	 */
 	void AlgBinaryBezout(const number_t& a, const number_t& b, number_t& x, number_t& y, number_t& g);
+
+	/**
+	 * \brief RSA Fast decrypt using CRT
+	 * \details 
+	 * 
+	 * \param c The encrypted message
+	 * \param d The number d | ed = 1 [mod phi]
+	 * \param n The number n | n = pq
+	 * \param p The prime p
+	 * \param q The prime q
+	 * \return The decrypted message
+	 */
+	number_t RsaDecryptCrt(const number_t& c, const number_t& d, const number_t& n, const number_t& p, const number_t& q);
+
+	/**
+	 * \brief Gen key for RSA
+	 * \details 
+	 * 
+	 * \param len Number bits length of p and q
+	 * \return The info for RSA (p, q, n, phi, e, d)
+	 */
+	RSA_INFO RsaGenKey(const int len);
 };
 

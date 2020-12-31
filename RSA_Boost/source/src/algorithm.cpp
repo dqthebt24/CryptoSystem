@@ -1,3 +1,4 @@
+#include "utils.h"
 #include "algorithm.h"
 
 using namespace std;
@@ -118,8 +119,7 @@ bool Algorithm::isPrime(number_t n) {
 		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 		number_t res = PowMod(bases[i], n - 1, n);
 		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-		 cout << "   RES: " << res << endl;
-		 std::cout << "   Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
+		 LOG("[isPrime] powMod: " << res << "\n\t" << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << MICRO_S);
 
 		if (res != 1) {
 			return false;
@@ -139,13 +139,13 @@ number_t Algorithm::GenPrime(const int length)
 
 		prime = 6*tmp + 1;
 		if (isPrime(prime)) {
-			cout<<"Prime (6n + 1)!!!!!"<<endl;
+			LOG("Prime (6n + 1)!!!!!");
 			break;
 		}
 
 		prime = 6*tmp + 5;
 		if (isPrime(prime)) {
-			cout<<"Prime (6n + 5)!!!!!"<<endl;
+			LOG("Prime (6n + 5)!!!!!");
 			break;
 		}
 
@@ -153,18 +153,20 @@ number_t Algorithm::GenPrime(const int length)
 	}
 
 	end = std::chrono::steady_clock::now();
-	std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]" << std::endl;
-
-	cout << "Prime is: " << prime << endl;
+	LOG("Time difference = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]");
+	LOG("Prime is: " << prime);
 	return prime;
 }
 
 number_t Algorithm::GenStrongPrime(const int length)
 {
+
+	// METHOD 1: i*p + 1
+
 	number_t r = GenPrime(length), p, i = 2;
 	bool found = false;
 	while (!found) {
-		cout << "i = " << i << "....\n";
+		LOG("i = " << i << " .... ");
 		p = i * r + 1;
 
 		if (isPrime(p)) {
@@ -173,8 +175,23 @@ number_t Algorithm::GenStrongPrime(const int length)
 
 		i <<= 1;
 	}
-	cout << "R = " << r << "; P = " << p << "; i = " << i << endl;
+	LOG("R = " << r << "; P = " << p << "; i = " << i);
 	return p;
+}
+
+number_t Algorithm::GetInverse(const number_t& e, const number_t& phi)
+{
+	number_t a = e, b = phi;
+	number_t b0 = b, t, q;
+	number_t x0 = 0, x1 = 1;
+	if (b == 1) return 1;
+	while (a > 1) {
+		q = a / b;
+		t = b, b = a % b, a = t;
+		t = x0, x0 = x1 - q * x0, x1 = t;
+	}
+	if (x1 < 0) x1 += b0;
+	return x1;
 }
 
 number_t Algorithm::GetEInverse(const number_t& e, const number_t& phi)
@@ -187,6 +204,22 @@ number_t Algorithm::GetEInverse(const number_t& e, const number_t& phi)
 		total = (total + mod) % e;
 	}
 	return (k * phi + 1) / e;
+}
+
+number_t Algorithm::SolveCrt(const std::vector<number_t> lstN, const std::vector<number_t> lstA)
+{
+	int i, len = (int)lstN.size();
+	number_t p, prod = 1, sum = 0;
+ 
+	for (i = 0; i < len; i++) prod *= lstN[i];
+ 
+	for (i = 0; i < len; i++) {
+		p = prod / lstN[i];
+		number_t inv = GetInverse(p, lstN[i]);
+		sum += lstA[i] * inv * p;
+	}
+
+	return sum % prod;
 }
 
 void Algorithm::AlgBinaryBezout(const number_t& a, const number_t& b, number_t& x, number_t& y, number_t& g)
@@ -233,4 +266,31 @@ void Algorithm::AlgBinaryBezout(const number_t& a, const number_t& b, number_t& 
 	x = C;
 	y = D;
 	g = g * v;
+}
+
+number_t Algorithm::RsaDecryptCrt(const number_t& c, const number_t& d, const number_t& n, const number_t& p, const number_t& q)
+{
+	number_t dp = d % (p - 1);
+	number_t dq = d % (q - 1);
+	std::vector<number_t> lstN{p, q};
+	std::vector<number_t> lstA{PowMod(c, dp, p), PowMod(c, dq, q)};
+
+	number_t res = SolveCrt(lstN, lstA);
+
+	return res % n;
+}
+
+RSA_INFO Algorithm::RsaGenKey(const int len)
+{
+	number_t p = GenPrime(len);
+	sleepcp(1000);
+	number_t q = GenPrime(len);
+
+	number_t n = p * q;
+	number_t phi = (p - 1)*(q - 1);
+	number_t e{"65537"}, d, tmp, g;
+
+	AlgBinaryBezout(e, phi, d, tmp, g);
+
+	return RSA_INFO(p, q, n, phi, e, d);
 }
