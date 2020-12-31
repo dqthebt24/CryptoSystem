@@ -42,7 +42,7 @@ void main_calculation()
 	std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
 }
 
-void main_rsa()
+void main_cmp()
 {
 	Algorithm* algorithm = Algorithm::GetInstance();
 	std::chrono::steady_clock::time_point begin, end;
@@ -113,14 +113,35 @@ int main()
 {
 	// main_calculation();
 
-	main_rsa();
+	//main_cmp();
+
+	std::chrono::steady_clock::time_point begin, end;
+	begin = std::chrono::steady_clock::now();
+	RSA_INFO info = Algorithm::GetInstance()->RsaGenKey(1024);
+	end = std::chrono::steady_clock::now();
+	std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << MICRO_S << std::endl;
+
+	std::cout << "p = " << info.p << std::endl;
+	std::cout << "q = " << info.q << std::endl;
+	std::cout << "n = " << info.n << std::endl;
+	std::cout << "phi = " << info.phi << std::endl;
+	std::cout << "e = " << info.e << std::endl;
+	std::cout << "d = " << info.d << std::endl;
 	
-	// std::chrono::steady_clock::time_point begin, end;	
-	// begin = std::chrono::steady_clock::now();
-	// number_t p = Algorithm::GetInstance()->GenStrongPrime(512);
-	// cout<<"P = "<<p<<endl;
-	// end = std::chrono::steady_clock::now();
-	// std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
+	number_t m = Algorithm::GetInstance()->GenerateNumber(512);
+	std::cout << "M: " << m << std::endl;
+
+	begin = std::chrono::steady_clock::now();
+	number_t c = Algorithm::GetInstance()->RsaEncrypt(m, info.e, info.n);
+	end = std::chrono::steady_clock::now();
+	std::cout << "Encrypted: " << c << std::endl;
+	std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << MICRO_S << std::endl;
+
+	begin = std::chrono::steady_clock::now();
+	number_t dec = Algorithm::GetInstance()->RsaDecrypt(m, info);
+	end = std::chrono::steady_clock::now();
+	std::cout << "Decrypted: " << dec << std::endl;
+	std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << MICRO_S << std::endl;
 
 	return 1;
 }

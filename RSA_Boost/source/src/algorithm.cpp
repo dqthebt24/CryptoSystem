@@ -119,7 +119,7 @@ bool Algorithm::isPrime(number_t n) {
 		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 		number_t res = PowMod(bases[i], n - 1, n);
 		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-		 LOG("[isPrime] powMod: " << res << "\n\t" << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << MICRO_S);
+		 LOG("powMod: " << res << "\n\t" << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << MICRO_S);
 
 		if (res != 1) {
 			return false;
@@ -293,4 +293,14 @@ RSA_INFO Algorithm::RsaGenKey(const int len)
 	AlgBinaryBezout(e, phi, d, tmp, g);
 
 	return RSA_INFO(p, q, n, phi, e, d);
+}
+
+number_t Algorithm::RsaEncrypt(const number_t& m, const number_t& e, number_t& n)
+{
+	return PowMod(m, e, n);
+}
+
+number_t Algorithm::RsaDecrypt(const number_t& c, const RSA_INFO& info)
+{
+	return RsaDecryptCrt(c, info.d, info.n, info.p, info.q);
 }

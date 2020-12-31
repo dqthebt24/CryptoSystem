@@ -12,6 +12,7 @@ struct RSA_INFO{
 	RSA_INFO(number_t _p, number_t _q, number_t _n, number_t _phi, number_t _e, number_t _d) {
 		p = _p;
 		q = _q;
+		n = _n;
 		phi = _phi;
 		e = _e;
 		d = _d;
@@ -159,5 +160,24 @@ public:
 	 * \return The info for RSA (p, q, n, phi, e, d)
 	 */
 	RSA_INFO RsaGenKey(const int len);
+
+	/**
+	 * \brief Encrypt the message using RSA
+	 * 
+	 * \param m	The message to be encrypted
+	 * \param e The public key
+	 * \param n The public number
+	 * \return Encrypted version of m
+	 */
+	number_t RsaEncrypt(const number_t& m, const number_t& e, number_t& n);
+
+	/**
+	 * Decrypt the encrypted message using RSA
+	 * 
+	 * \param c		The encrypted message
+	 * \param info	RSA info (p, q, n, phi, e, d)
+	 * \return		The decrypted message
+	 */
+	number_t RsaDecrypt(const number_t& c, const RSA_INFO& info);
 };
 
