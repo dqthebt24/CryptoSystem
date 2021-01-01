@@ -37,6 +37,17 @@ Algorithm* Algorithm::GetInstance()
 	return mInstance;
 }
 
+std::string Algorithm::NumberToBinary(const number_t& num)
+{
+	std::string r;
+	number_t n = num;
+	while (n != 0) {
+		r = (n % 2 == 0 ? "0" : "1") + r;
+		n /= 2;
+	}
+	return r;
+}
+
 number_t Algorithm::binaryToDecimal(string n)
 {
 	string num = n;
@@ -306,17 +317,30 @@ number_t Algorithm::RsaDecryptCrt(const number_t& c, const number_t& d, const nu
 
 RSA_INFO Algorithm::RsaGenKey(const int len)
 {
+	std::chrono::steady_clock::time_point begin, end;
 	number_t p = GenPrime(len);
 	sleepcp(1000);
 	number_t q = GenPrime(len);
 
+	LOG_TIME(begin);
 	number_t n = p * q;
+	LOG_TIME(end);
+	LOG("Calculated n = q*q "<< TIME_DIFF(end,begin) << MICRO_S);
+
+	LOG_TIME(begin);
 	number_t phi = (p - 1)*(q - 1);
+	LOG_TIME(end);
+	LOG("Calculated phi = (q-1)*(q-1) " << TIME_DIFF(end, begin) << MICRO_S);
+
 	/*number_t e{"65537"}, d, tmp, g;
 	AlgBinaryBezout(e, phi, d, tmp, g);*/
 
 	number_t e, d;
+
+	LOG_TIME(begin);
 	genKey(p, q, phi, n, e, d);
+	LOG_TIME(end);
+	LOG("Generated e, d" << TIME_DIFF(end, begin) << MICRO_S);
 
 	return RSA_INFO(p, q, n, phi, e, d);
 }
@@ -329,4 +353,9 @@ number_t Algorithm::RsaEncrypt(const number_t& m, const number_t& e, number_t& n
 number_t Algorithm::RsaDecrypt(const number_t& c, const RSA_INFO& info)
 {
 	return RsaDecryptCrt(c, info.d, info.n, info.p, info.q);
+}
+
+void Algorithm::RsaGenED(const number_t& p, const number_t& q, const number_t& phi, const number_t& n, number_t& e, number_t& d)
+{
+	genKey(p, q, phi, n, e, d);
 }

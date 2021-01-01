@@ -109,35 +109,60 @@ void main_cmp()
 	std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
 }
 
-void main_rsa()
+void main_rsa(number_t p = 0, number_t q = 0)
 {
-	std::chrono::steady_clock::time_point begin, end;
-	begin = std::chrono::steady_clock::now();
-	RSA_INFO info = Algorithm::GetInstance()->RsaGenKey(1024);
-	end = std::chrono::steady_clock::now();
-	std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << MICRO_S << std::endl;
+	chrono::steady_clock::time_point begin, end;
+	Algorithm* alg = Algorithm::GetInstance();
+	RSA_INFO info;
 
-	std::cout << "p = " << info.p << std::endl;
-	std::cout << "q = " << info.q << std::endl;
-	std::cout << "n = " << info.n << std::endl;
-	std::cout << "phi = " << info.phi << std::endl;
-	std::cout << "e = " << info.e << std::endl;
-	std::cout << "d = " << info.d << std::endl;
+	if (p == 0) { // Generate new primes
+		cout << "RSA Gen Keys started!!!\n" << endl;
+		begin = std::chrono::steady_clock::now();
+		info = alg->RsaGenKey(1024);
+		end = chrono::steady_clock::now();
+		cout << "RSA Gen Keys done!!!" << chrono::duration_cast<chrono::microseconds>(end - begin).count() << MICRO_S << endl;
+	} else {
+		info.p = p;
+		info.q = q;
 
-	number_t m = Algorithm::GetInstance()->GenerateNumber(512);
-	std::cout << "M: " << m << std::endl;
+		begin = chrono::steady_clock::now();
+		info.n = info.p * info.q;
+		end = chrono::steady_clock::now();
+		cout << "Calculated n = p*q " << chrono::duration_cast<chrono::microseconds>(end - begin).count() << MICRO_S << endl;
 
-	begin = std::chrono::steady_clock::now();
-	number_t c = Algorithm::GetInstance()->RsaEncrypt(m, info.e, info.n);
-	end = std::chrono::steady_clock::now();
-	std::cout << "Encrypted: " << c << std::endl;
-	std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << MICRO_S << std::endl;
+		begin = chrono::steady_clock::now();
+		info.phi = (info.p - 1) * (info.q - 1);
+		end = chrono::steady_clock::now();
+		cout << "Calculated phi = (p - 1)*(q - 1) " << chrono::duration_cast<chrono::microseconds>(end - begin).count() << MICRO_S << endl;
+		
+		begin = std::chrono::steady_clock::now();
+		alg->RsaGenED(info.p, info.q, info.phi, info.n, info.e, info.d);
+		end = chrono::steady_clock::now();
+		cout << "Generated e, d " << chrono::duration_cast<chrono::microseconds>(end - begin).count() << MICRO_S << endl;
+		
+	}
 
-	begin = std::chrono::steady_clock::now();
-	number_t dec = Algorithm::GetInstance()->RsaDecrypt(m, info);
-	end = std::chrono::steady_clock::now();
-	std::cout << "Decrypted: " << dec << std::endl;
-	std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << MICRO_S << std::endl;
+	cout << "p = " << alg->NumberToBinary(info.p) << endl;
+	cout << "q = " << alg->NumberToBinary(info.q) << endl;
+	cout << "n = " << alg->NumberToBinary(info.n) << endl;
+	cout << "phi = " << alg->NumberToBinary(info.phi) << endl;
+	cout << "e = " << alg->NumberToBinary(info.e) << endl;
+	cout << "d = " << alg->NumberToBinary(info.d) << endl;
+
+	number_t m = alg->GenerateNumber(512);
+	cout << "M: " << alg->NumberToBinary(m) << endl;
+
+	begin = chrono::steady_clock::now();
+	number_t c = alg->RsaEncrypt(m, info.e, info.n);
+	end = chrono::steady_clock::now();
+	cout << "Encrypted: " << alg->NumberToBinary(c) << endl;
+	cout << "Time difference = " << chrono::duration_cast<chrono::microseconds>(end - begin).count() << MICRO_S << endl;
+
+	begin = chrono::steady_clock::now();
+	number_t dec = alg->RsaDecrypt(c, info);
+	end = chrono::steady_clock::now();
+	cout << "Decrypted: " << alg->NumberToBinary(dec) << endl;
+	cout << "Time difference = " << chrono::duration_cast<chrono::microseconds>(end - begin).count() << MICRO_S << endl;
 }
 int main()
 {

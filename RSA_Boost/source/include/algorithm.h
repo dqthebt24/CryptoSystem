@@ -8,7 +8,15 @@ typedef mp::number<mp::cpp_int_backend<4096, 4096, mp::signed_magnitude, mp::unc
 
 struct RSA_INFO{
 	number_t p, q, n, phi, e, d;
-
+	RSA_INFO()
+	{
+		p = 0;
+		q = 0;
+		n = 0;
+		phi = 0;
+		e = 0;
+		d = 0;
+	}
 	RSA_INFO(number_t _p, number_t _q, number_t _n, number_t _phi, number_t _e, number_t _d) {
 		p = _p;
 		q = _q;
@@ -47,6 +55,14 @@ private:
 
 public:
 	static Algorithm* GetInstance();
+
+	/**
+	 * \brief Convert number to binary string
+	 * 
+	 * \param num The number will be converted
+	 * \return The binary string
+	 */
+	std::string NumberToBinary(const number_t& num);
 
 	/**
 	 * \brief Generate a binary string with size is 'length'
@@ -190,5 +206,17 @@ public:
 	 * \return		The decrypted message
 	 */
 	number_t RsaDecrypt(const number_t& c, const RSA_INFO& info);
+
+	/**
+	 * \brief Generate e,d when known p, q, n, phi with d^4 > n
+	 * 
+	 * \param p The prime p
+	 * \param q The prime q
+	 * \param phi The numbmer phi = (p-1)*(q-1)
+	 * \param n The number n = p*q
+	 * \param e The public key
+	 * \param d The private key
+	 */
+	void RsaGenED(const number_t& p, const number_t& q, const number_t& phi, const number_t& n, number_t& e, number_t& d);
 };
 
