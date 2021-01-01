@@ -48,6 +48,11 @@ std::string Algorithm::NumberToBinary(const number_t& num)
 	return r;
 }
 
+number_t Algorithm::BinaryToNumber(const std::string str)
+{
+	return binaryToDecimal(str);
+}
+
 number_t Algorithm::binaryToDecimal(string n)
 {
 	string num = n;

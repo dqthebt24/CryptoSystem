@@ -164,13 +164,18 @@ void main_rsa(number_t p = 0, number_t q = 0)
 	cout << "Decrypted: " << alg->NumberToBinary(dec) << endl;
 	cout << "Time difference = " << chrono::duration_cast<chrono::microseconds>(end - begin).count() << MICRO_S << endl;
 }
-int main()
+int main(int argc, char* argv[])
 {
+	Algorithm* alg = Algorithm::GetInstance();
 	// main_calculation();
 
 	//main_cmp();
 
-	main_rsa();
+	if (argc >= 3) {
+		main_rsa(alg->BinaryToNumber(string(argv[1])), alg->BinaryToNumber(string(argv[2])));
+	} else {
+		main_rsa();
+	}
 
 	return 1;
 }

@@ -65,6 +65,14 @@ public:
 	std::string NumberToBinary(const number_t& num);
 
 	/**
+	 * \brief Convert binary string to number
+	 * 
+	 * \param str The binary string
+	 * \return The number is converted
+	 */
+	number_t BinaryToNumber(const std::string str);
+
+	/**
 	 * \brief Generate a binary string with size is 'length'
 	 *
 	 * \param length	The size of the string
