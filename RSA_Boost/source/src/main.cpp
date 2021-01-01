@@ -109,7 +109,7 @@ void main_cmp()
 	std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
 }
 
-void main_rsa(number_t p = 0, number_t q = 0)
+void main_rsa(bool isBinaryFormat = true, number_t p = 0, number_t q = 0)
 {
 	chrono::steady_clock::time_point begin, end;
 	Algorithm* alg = Algorithm::GetInstance();
@@ -142,26 +142,50 @@ void main_rsa(number_t p = 0, number_t q = 0)
 		
 	}
 
-	cout << "p = " << alg->NumberToBinary(info.p) << endl;
-	cout << "q = " << alg->NumberToBinary(info.q) << endl;
-	cout << "n = " << alg->NumberToBinary(info.n) << endl;
-	cout << "phi = " << alg->NumberToBinary(info.phi) << endl;
-	cout << "e = " << alg->NumberToBinary(info.e) << endl;
-	cout << "d = " << alg->NumberToBinary(info.d) << endl;
+	if (isBinaryFormat) {
+		cout << "p = " << alg->NumberToBinary(info.p) << endl;
+		cout << "q = " << alg->NumberToBinary(info.q) << endl;
+		cout << "n = " << alg->NumberToBinary(info.n) << endl;
+		cout << "phi = " << alg->NumberToBinary(info.phi) << endl;
+		cout << "e = " << alg->NumberToBinary(info.e) << endl;
+		cout << "d = " << alg->NumberToBinary(info.d) << endl;
+	} else {
+		cout << "p = " << info.p << endl;
+		cout << "q = " << info.q << endl;
+		cout << "n = " << info.n << endl;
+		cout << "phi = " << info.phi << endl;
+		cout << "e = " << info.e << endl;
+		cout << "d = " << info.d << endl;
+	}
 
 	number_t m = alg->GenerateNumber(512);
-	cout << "M: " << alg->NumberToBinary(m) << endl;
+
+	if (isBinaryFormat) {
+		cout << "M: " << alg->NumberToBinary(m) << endl;
+	} else {
+		cout << "M: " << m << endl;
+	}
+	
 
 	begin = chrono::steady_clock::now();
 	number_t c = alg->RsaEncrypt(m, info.e, info.n);
 	end = chrono::steady_clock::now();
-	cout << "Encrypted: " << alg->NumberToBinary(c) << endl;
+
+	if (isBinaryFormat) {
+		cout << "Encrypted: " << alg->NumberToBinary(c) << endl;
+	} else {
+		cout << "Encrypted: " << c << endl;
+	}
 	cout << "Time difference = " << chrono::duration_cast<chrono::microseconds>(end - begin).count() << MICRO_S << endl;
 
 	begin = chrono::steady_clock::now();
 	number_t dec = alg->RsaDecrypt(c, info);
 	end = chrono::steady_clock::now();
-	cout << "Decrypted: " << alg->NumberToBinary(dec) << endl;
+	if (isBinaryFormat) {
+		cout << "Decrypted: " << alg->NumberToBinary(dec) << endl;
+	} else {
+		cout << "Decrypted: " << dec << endl;
+	}
 	cout << "Time difference = " << chrono::duration_cast<chrono::microseconds>(end - begin).count() << MICRO_S << endl;
 }
 int main(int argc, char* argv[])
@@ -172,7 +196,7 @@ int main(int argc, char* argv[])
 	//main_cmp();
 
 	if (argc >= 3) {
-		main_rsa(alg->BinaryToNumber(string(argv[1])), alg->BinaryToNumber(string(argv[2])));
+		main_rsa(false, alg->BinaryToNumber(string(argv[1])), alg->BinaryToNumber(string(argv[2])));
 	} else {
 		main_rsa();
 	}
