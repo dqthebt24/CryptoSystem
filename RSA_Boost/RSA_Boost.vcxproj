@@ -22,11 +22,13 @@
     <ClCompile Include="source\src\algorithm.cpp" />
     <ClCompile Include="source\src\bigint.cpp" />
     <ClCompile Include="source\src\main.cpp" />
+    <ClCompile Include="source\src\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="algorithm.h" />
+    <ClInclude Include="source\include\algorithm.h" />
     <ClInclude Include="source\include\bigint.h" />
     <ClInclude Include="source\include\define.h" />
+    <ClInclude Include="source\include\utils.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -96,7 +98,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>

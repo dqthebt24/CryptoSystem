@@ -225,7 +225,7 @@ void main_inverse()
     cout << "r = " << r.getDigits() << endl;
     std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]" << std::endl;*/
 }
-int main()
+int main(int argc, char* argv[])
 {
     main_algorithm();
     //main_basic();

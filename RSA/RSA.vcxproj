@@ -27,7 +27,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\RSA_Boost\source\include\utils.h" />
     <ClInclude Include="source\include\algorithm.h" />
     <ClInclude Include="source\include\bigint.h" />
     <ClInclude Include="source\include\define.h" />
