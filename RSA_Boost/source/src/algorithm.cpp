@@ -203,19 +203,18 @@ number_t Algorithm::GenStrongPrime(const int length)
 
 	// METHOD 1: i*p + 1
 
-	number_t r = GenPrime(length), p, i = 2;
+	number_t r = GenPrime(length), p, i = 0, t = 0;
 	bool found = false;
 	while (!found) {
-		LOG("i = " << i << " .... ");
-		p = i * r + 1;
+		t = ++i*2;
+		LOG("t = " << t << " .... ");
+		p = t * r + 1;
 
 		if (isPrime(p)) {
 			found = true;
 		}
-
-		i <<= 1;
 	}
-	LOG("R = " << r << "; P = " << p << "; i = " << i);
+	LOG("R = " << r << "; P = " << p << "; t = " << i);
 	return p;
 }
 
