@@ -118,7 +118,7 @@ void main_rsa(bool isBinaryFormat = true, number_t p = 0, number_t q = 0)
 	if (p == 0) { // Generate new primes
 		cout << "RSA Gen Keys started!!!\n" << endl;
 		begin = std::chrono::steady_clock::now();
-		info = alg->RsaGenKey(1024);
+		info = alg->RsaGenKey(512);
 		end = chrono::steady_clock::now();
 		cout << "RSA Gen Keys done!!!" << chrono::duration_cast<chrono::microseconds>(end - begin).count() << MICRO_S << endl;
 	} else {
@@ -158,7 +158,7 @@ void main_rsa(bool isBinaryFormat = true, number_t p = 0, number_t q = 0)
 		cout << "d = " << info.d << endl;
 	}
 
-	number_t m = alg->GenerateNumber(512);
+	number_t m = alg->GenerateNumber(500);
 
 	if (isBinaryFormat) {
 		cout << "M: " << alg->NumberToBinary(m) << endl;
@@ -179,6 +179,17 @@ void main_rsa(bool isBinaryFormat = true, number_t p = 0, number_t q = 0)
 	cout << "Time difference = " << chrono::duration_cast<chrono::microseconds>(end - begin).count() << MICRO_S << endl;
 
 	begin = chrono::steady_clock::now();
+	number_t decNormal = alg->PowMod(c, info.d, info.n);
+	end = chrono::steady_clock::now();
+	if (isBinaryFormat) {
+		cout << "Decrypted normal: " << alg->NumberToBinary(decNormal) << endl;
+	} else {
+		cout << "Decrypted normal: " << decNormal << endl;
+	}
+	cout << "Time difference = " << chrono::duration_cast<chrono::microseconds>(end - begin).count() << MICRO_S << endl;
+
+
+	begin = chrono::steady_clock::now();
 	number_t dec = alg->RsaDecrypt(c, info);
 	end = chrono::steady_clock::now();
 	if (isBinaryFormat) {
@@ -188,6 +199,50 @@ void main_rsa(bool isBinaryFormat = true, number_t p = 0, number_t q = 0)
 	}
 	cout << "Time difference = " << chrono::duration_cast<chrono::microseconds>(end - begin).count() << MICRO_S << endl;
 }
+
+void main_compare()
+{
+	const int bits = 1024;
+	Algorithm* alg = Algorithm::GetInstance();
+	std::chrono::steady_clock::time_point begin, end;
+
+	cout<<"Test Calculation version boost::multiprecision "<<bits<<" bits!\n";
+	cout<<"Generating 3 numbers "<<bits<<" bits"<<endl;
+	LOG_TIME(begin);
+	number_t a = alg->GenPrime(bits);
+	sleepcp(1000);
+	number_t b = alg->GenPrime(bits);
+	sleepcp(1000);
+	number_t c = alg->GenPrime(bits);
+	LOG_TIME(end);
+	cout<<"Generated "<<TIME_DIFF(end, begin)<<MICRO_S<<endl;
+
+	cout<<"a = "<<alg->NumberToBinary(a)<<endl;
+	cout<<"b = "<<alg->NumberToBinary(b)<<endl;
+	cout<<"c = "<<alg->NumberToBinary(c)<<endl;
+
+
+	LOG_TIME(begin);
+	number_t mod = a % b;
+	LOG_TIME(end);
+	cout<<"a % b = "<<alg->NumberToBinary(mod)<<endl;
+	cout<<"Time mod: "<<TIME_DIFF(end, begin)<<MICRO_S<<endl;
+
+	LOG_TIME(begin);
+	number_t mMod = alg->MulMod(a,b,c);
+	LOG_TIME(end);
+	cout<<"a*b mod c = "<<alg->NumberToBinary(mMod)<<endl;
+	cout<<"Time mulMod: "<<TIME_DIFF(end, begin)<<MICRO_S<<endl;
+
+
+	LOG_TIME(begin);
+	number_t pMod = alg->PowMod(a,b,c);
+	LOG_TIME(end);
+	cout<<"a^b mod c = "<<alg->NumberToBinary(pMod)<<endl;
+	cout<<"Time powMod: "<<TIME_DIFF(end, begin)<<MICRO_S<<endl;
+
+}
+
 int main(int argc, char* argv[])
 {
 	Algorithm* alg = Algorithm::GetInstance();
@@ -195,10 +250,14 @@ int main(int argc, char* argv[])
 
 	//main_cmp();
 
+	// Test comparation
+	// main_compare();
+	// return 1;
+
 	if (argc >= 3) {
 		main_rsa(false, alg->BinaryToNumber(string(argv[1])), alg->BinaryToNumber(string(argv[2])));
 	} else {
-		main_rsa();
+		main_rsa(false);
 	}
 
 	return 1;
