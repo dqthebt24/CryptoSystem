@@ -1,0 +1,27 @@
+Quá trình cài đặt phép PowerMod cần thiết cho cả hai cách làm vì nếu dùng \textbf{number\_t} thực hiện phép lũy thừa thì có thể sẽ xảy ra tràn số. 
+Phép toán PowerMod được cài đặt theo \textit{Thuật toán \ref{alg:power-mod}}
+
+\begin{algorithm}
+\caption{Thuật toán PowerMod}\label{alg:power-mod}
+\hspace*{\algorithmicindent} \textbf{Input:} BigInt a, BigInt p, BigInt n\\
+\hspace*{\algorithmicindent} \textbf{Output:} $a^p\  \% \ n$ 
+\begin{algorithmic}[1]
+\Procedure{PowerMod}{$a,p,n$}
+\State $y \gets 1$
+\If {$p = 0$}
+\State \textbf{Return} \ $y$
+\EndIf
+\State $A \gets x$
+\If {$p_0 = 1$}
+\State $y \gets x$
+\EndIf
+\For {$i \gets 1$, m}
+\State $A \gets A^2\ mod\ n$
+\If {$p_i = 1$}
+\State $y \gets A*y \ mod \ n$
+\EndIf
+\EndFor
+\State \textbf{Return } $y$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}

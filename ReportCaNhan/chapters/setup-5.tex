@@ -1,0 +1,18 @@
+Đồ án dùng định lý Fermat nhỏ để kiểm tra số số giả nguyên tố mạnh với 4 cơ sở là bốn số tự nhiên. \textit{Thuật toán \ref{alg:is-prime}} mô tả cách kiểm tra số nguyên 
+tố.
+
+\begin{algorithm}
+\caption{Thuật toán PowerMod}\label{alg:is-prime}
+\hspace*{\algorithmicindent} \textbf{Input:} BigInt n\\
+\hspace*{\algorithmicindent} \textbf{Output:} True: là số nguyên tố, False: ngược lại 
+\begin{algorithmic}[1]
+\Procedure{IsPrime}{$n$}
+\For {$i$\ \textbf{in}\ $\{2, 5, 7, 9\}$}
+\If {$i^{n-1}\ \% \ n \neq 1$}
+\State \textbf{Return } false
+\EndIf
+\EndFor
+\State \textbf{Return } true
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}

@@ -1,0 +1,20 @@
+Đồ án cài đặt lại thuật toán mã hóa RSA với số $p$, $q$ là các số nguyên tố 1024 bits bằng ngôn ngữ lập trình C++. 
+Phần cài đặt này gồm 2 quá trình chính tương ứng với 2 quá trình chính trong mã hóa RSA: 
+quá trình \textit{phát sinh key} và quá trình \textit{encrytp/decrypt}.
+Quá trình cài đặt sử dụng các thuật toán trong trong môn học như thuật toán nhân lấy phần dư, 
+thuật toán lũy thừa lấy phần dư, thuật toán Bezout nhị phân, thuật toán số dư trung hoa và một số thuật toán khác. 
+
+Do đã thử qua một số thư viện số nguyên lớn được \textit{public trên Github} và nhận thấy các thư viện khá chậm với số lớn và cồng kềnh nên đồ án tự cài đặt số nguyên lớn bằng các kĩ thuật lập trình căn bản.
+Qua nhiều \textit{version} cải tiến, đồ án đã thực hiện được 2 quá trình chính kể trên với thời gian thực.
+Báo cáo này xin được trình bày 2 cách làm tốt nhất hiện đã đạt được. 
+
+Cách làm thứ nhất (cách 1) \textit{code} lại hoàn toàn cách xử lý với số nguyên lớn mà không dùng thư viện hỗ trợ số nguyên lớn nào, 
+cách làm này lưu trữ các chữ số trong dãy \textit{bit nhị phân} dưới kiểu dữ liệu \textit{char*} cùng với các hàm thao tác nhanh nhất trong C/C++ như \textit{memcpy, memset}
+và dùng các thuật toán trong chương trình học cùng với một số thuật toán tìm hiểu được từ các paper trên mạng.
+
+Cách làm thứ hai (cách 2) cũng hoàn toàn tự \textit{code} lại các thuật toán tuy nhiên có xử dụng kiểu dữ liệu nhiều bit hơn các kiểu dữ liệu thông thường có trong C++, 
+cách này định nghĩa lại một kiểu số 4096 bits bằng thư viện Boost Multiprecision\footnote{https://t.ly/CmsG}.
+
+Tuy cách làm thứ nhất thời gian thực thi các phép toán là không chậm nhưng cách làm thứ hai tối ưu hơn và đạt được thời gian xử lý rất nhanh. 
+Kết quả chính của đồ án này là từ việc cài đặt theo cách 2. Tuy nhiên báo cáo cũng có sự so sánh giữa 2 cách cài đặt để rút ra được kết luận cuối cùng. Các phần tiếp theo trong 
+báo cào sẽ nói về những bước cài đặt của đồ án, ở mỗi bước, báo cáo sẽ nói về cài đặt theo mỗi cách đã nêu ở trên.

@@ -1,0 +1,60 @@
+Việc phát sinh số nguyên tố $n$ bits thực hiện bằng việc chọn lựa ngẫu nhiên một số $n$ bits và kiểm thử xem số vừa phát sinh có phải là số nguyên tố hay không 
+thông qua hàm \textit{ISPRIME} ở phần trên. Một đặc điểm đáng chú ý là các số nguyên tố đều có dạng chung\footnote{https://t.ly/vn5e} là  $6n \pm 1$, do đó có thể dùng đặc tính này để hạn chế số phép 
+thử bằng cách chỉ thử những số có dạng $6n \pm 1$.
+
+Phần cài đặt phát sinh số nguyên tố $n$ bits được thực hiện bằng cách phát sinh một số nguyên dương ngẫu nhiên $t$ có $n-3$ bits \textit{(vì 6 có 3 bits)} sau đó kiểm tra số 
+$6n + 1$ hoặc số $6n - 1$ có phải số nguyên tố hay không, nếu một trong hai số trên là số nguyên tố thì chọn, ngược lại tăng $t$ lên 1 đơn vị và lặp lại quá trình. 
+\textit{Thuật toán \ref{alg:gen-prime}} mô tả cách tạo số nguyên tố $n$ bits.
+
+\begin{algorithm}
+\caption{Thuật toán GenPrime}\label{alg:gen-prime}
+\hspace*{\algorithmicindent} \textbf{Input:} $n$: số bits\\
+\hspace*{\algorithmicindent} \textbf{Output:} Số nguyên tố $n$ bits 
+\begin{algorithmic}[1]
+\Procedure{GenPrime}{$n$}
+\State $t \gets GenNumber(n-3)$ \Comment Tạo số nguyên $n-3$ bits
+\While{true}
+\State $t \gets 6n + 1$
+\If {\textit{ISPRIME(t)}}
+\State \textbf{Return } $t$
+\EndIf
+\State $t \gets 6n - 1$
+\If {\textit{ISPRIME(t)}}
+\State \textbf{Return } $t$
+\EndIf
+\State $t \gets t + 1$
+\EndWhile
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+Đồ án cũng có cài đặt thuật toán tạo số \textbf{\textit{nguyên tố mạnh}} để tăng tính an toàn cho RSA. Số nguyên tố mạnh được định nghĩa\footnote{Giáo trình}:
+\[ p \in \mathcal{P}: p - 1 = 2r,\ r \in \mathcal{P} \]
+
+Để đơn giản, đồ án thực hiện phát sinh số nguyên tố mạnh được thực hiện dựa vào bài báo \cite{Rivest1978} của nhóm tác giả \textit{R. L. Rivest and 
+A. Shamir and L. Adleman} năm 1978 (trang 9). Cụ thể, phát sinh một số nguyên tố $u$, sau đó tìm số nguyên tố đầu tiên trong dãy số $i*u + 1,\ i=2,4,6,...$\ \textit{Thuật toán \ref{alg:gen-strong-prime}} 
+thể hiện việc phát sinh số nguyên tố mạnh.
+
+\begin{algorithm}
+\caption{Phát sinh số nguyên tố mạnh}\label{alg:gen-strong-prime}
+\hspace*{\algorithmicindent} \textbf{Input:} n: số bits\\
+\hspace*{\algorithmicindent} \textbf{Output:} Số nguyên tố mạnh $\approx n$ bits 
+\begin{algorithmic}[1]
+\Procedure{GenStrongPrime}{$n$}
+\State $u \gets GENPRIME(n-2)$ \Comment Tạo số nguyên tố $n-2$ bits
+\State $t \gets 1$
+\While{true}
+\State $i \gets 2t$
+\State $p \gets i*u + 1$
+\If {ISPRIME(p)}
+\State \textbf{Return } $p$
+\EndIf
+\State $t \gets t + 1$
+\EndWhile
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+Như trình bày ở trên nhóm tác giả R. L. Rivest phát triển cách phát sinh số nguyên tố mạnh (an toàn) nhằm tăng tính bảo mật cho RSA, tuy nhiên trong một bài báo sau 
+này \cite{AreStrongPrimesNeedForRsa} cũng của chính tác giả, tác giả có nói số nguyên tố mạnh không làm tăng tính bảo mật của RSA lên quá nhiều so với các số 
+nguyên tố lớn thông thường, do đó không cần thiết phải dùng số nguyên tố mạnh trong RSA (trang 1).

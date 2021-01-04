@@ -1,0 +1,27 @@
+Cũng như việc cài đặt phép tính \%, việc cài đặt phép tính MulMod dùng kiểu dữ liệu \textbf{number\_t} đã định nghĩa không có gì đặc biệt ngoài việc đảm bảo 
+không bị tràn số, tuy nhiên với kiểu dữ liệu 4096 bits thì việc tràn số trong phép nhân với hai số 1024 bits không thể xảy ra vì phép nhân số $n$ bits và số $t$ bits 
+cho ra kết quả nhiều nhất là $n + t + 2$ bits (\textit{\cite{Menezes} Chương 14 trang 595}). Thực hiện phép MulMod với kiểu dữ liệu \textbf{number\_t} là thực hiện phép nhân 
+trước rồi phép modulo sau.
+
+Còn với cách 1, cài đặt thuật toán MulMod cho kiểu số nguyên lớn tự định nghĩa được thực hiện theo \textit{Thuật toán \ref{alg:mul-mod}}
+
+\begin{algorithm}
+\caption{Thuật toán MulMod}\label{alg:mul-mod}
+\hspace*{\algorithmicindent} \textbf{Input:} BigInt a, BigInt b, BigInt n\\
+\hspace*{\algorithmicindent} \textbf{Output:} a * b \% n
+\begin{algorithmic}[1]
+\Procedure{MulMod}{$a,b,n$}
+\State $p \gets 0$
+\If {$y_0 > 0$} \Comment Bit cuối là 1
+\State $p \gets x$
+\EndIf
+\For {$y \gets 1$, m}\Comment m là số bit của b
+\State $x \gets 2*x \%n$ \Comment x L-Shift 1 bit rồi \% n
+\EndFor
+\If {$y_i = 1$}
+\State $p \gets (p+x) \%n$
+\EndIf
+\State \textbf{Return } $p$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}

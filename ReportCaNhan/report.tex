@@ -1,0 +1,112 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[12pt]{article}
+\usepackage[T5]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[vietnamese,english]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage[figurename=Hình]{caption}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+%----------------------------------------------------------------------------------------
+%	MULTI FOOTNOTE
+%----------------------------------------------------------------------------------------
+
+\let\oldFootnote\footnote
+\newcommand\nextToken\relax
+
+\renewcommand\footnote[1]{%
+    \oldFootnote{#1}\futurelet\nextToken\isFootnote}
+
+\newcommand\isFootnote{%
+    \ifx\footnote\nextToken\textsuperscript{,}\fi}
+%----------------------------------------------------------------------------------------
+
+\makeatletter
+\renewcommand*{\ALG@name}{Thuật toán}
+\makeatother
+
+\addto{\captionsenglish}{\renewcommand*{\contentsname}{Mục lục}}
+\addto{\captionsenglish}{\renewcommand*{\refname}{Tài liệu tham khảo}}
+
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+\input{chapters/title}
+
+%----------------------------------------------------------------------------------------
+%	TABLE OF CONTENTS SECTION
+%----------------------------------------------------------------------------------------
+
+{
+  \hypersetup{linkcolor=black}
+  \tableofcontents\newpage\cleardoublepage
+}
+
+%----------------------------------------------------------------------------------------
+%	CONTENTS SECTION
+%----------------------------------------------------------------------------------------
+
+\section{Giới thiệu}
+\input{chapters/introduction}\newpage\cleardoublepage
+
+\section{Cài đặt tính toán cơ bản}
+\subsection{Số nguyên lớn}
+\input{chapters/setup-1}
+
+\subsection{Phép Mod}
+\input{chapters/setup-2}
+
+\subsection{Phép MulMod}
+\input{chapters/setup-3}
+
+\subsection{Phép PowerMod}
+\input{chapters/setup-4}
+
+\subsection{Kiểm tra số nguyên tố}
+\input{chapters/setup-5}
+
+\newpage\cleardoublepage
+
+\section{Cài đặt tính toán cho RSA}
+\subsection{Phát sinh số nguyên tố mạnh}
+\input{chapters/rsa-1}
+
+\subsection{Tìm số e và d}
+\input{chapters/rsa-2}
+
+\subsection{Giải mã nhanh dùng CRT}
+\input{chapters/rsa-3}
+
+\newpage\cleardoublepage
+\section{Kết quả đạt được}
+\newpage\cleardoublepage
+\section{Kết luận}
+
+%----------------------------------------------------------------------------------------
+%	REFERENCES SECTION
+%----------------------------------------------------------------------------------------
+
+\newpage\cleardoublepage
+\nocite{*}
+\addcontentsline{toc}{section}{Tài liệu tham khảo}
+\bibliography{references}\newpage\cleardoublepage
+\bibliographystyle{plain}
+
+\end{document}
