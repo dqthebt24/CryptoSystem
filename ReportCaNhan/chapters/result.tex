@@ -1,0 +1,51 @@
+Trong cách làm 1 (xây dựng lại class BigInt), dù đã cải tiến rất nhiều về cách code như chuyển từ lưu trữ chuỗi nhị phân bằng \textit{std::string} sang \textit{char*}, chuyển từ dùng 
+\textit{strcpy} sang \textit{memcpy}, dùng \textit{memset}, $\hdots$ chương trình đạt được tốc độ runtime cũng tương đối tốt tuy nhiên vẫn còn chậm hơn rất 
+nhiều so với cách làm 2 (dùng \textit{boost::multiprecision}). Dưới đây là bảng so sánh hai cách làm với số nguyên 512 bits và các kết quả khi thực hiện các phép tính với theo cách làm 2.
+
+\begin{center}
+\begin{table}[H]
+\centering
+\begin{tabular}{ |P{5cm}|P{2.1cm}|P{2.1cm}|P{2.1cm}|  }
+ \hline
+ \textbf{Cách làm lưu trữ số} & \textbf{Mod} & \textbf{MulMod} &\textbf{PowerMod}\\
+ \hline
+ BigInt  & 63    &970&   3,814,117\\
+ \hline
+ boost::multiprecision &   $\approx 1$  & $\approx 6$   &$\approx 4,500$\\
+ \hline
+\end{tabular}
+\caption{\label{tab:cmp}Thực hiện các phép toán với số nguyên 512 bits (Đơn vị: $\mu$s)}
+\end{table}
+\end{center}
+
+\begin{center}
+\begin{table}[H]
+\centering
+\begin{tabular}{ |P{3cm}|P{3cm}|P{3cm}|P{3cm}|  }
+ \hline
+ \textbf{Phép tính} &\textbf{Mod} & \textbf{MulMod} &\textbf{PowerMod}\\
+ \hline
+ \textbf{Thời gian}&$\approx 1$    &$\approx 19$&   $\approx42,185$\\
+ \hline
+\end{tabular}
+\captionsetup{justification=centering}
+\caption{\label{tab:best-cal}Thực hiện các phép toán với số nguyên 1024 bits dùng cách lưu trữ số lớn với \textit{boost::multiprecision} (Đơn vị: $\mu$s)}
+\end{table}
+\end{center}
+
+\begin{center}
+\begin{table}[H]
+\centering
+\begin{tabular}{ |P{2.2cm}|P{2.2cm}|P{2.2cm}|P{2.2cm}|P{2.2cm}|  }
+ \hline
+ \textbf{Số bit p, q} &\textbf{Số bit M} & \textbf{Encrypt} &\textbf{Decrypt $c^d\ mod\ N$}&\textbf{Decrypt CRT}\\
+ \hline
+ 1024&500&1,049&236,354&58,427\\
+ \hline
+ 512&500&427&57,252&22,798\\
+ \hline
+\end{tabular}
+\captionsetup{justification=centering}
+\caption{\label{tab:enc-dec}Thời gian thực hiện \textit{encrypt} và \textit{decrypt} (Đơn vị: $\mu$s)}
+\end{table}
+\end{center}

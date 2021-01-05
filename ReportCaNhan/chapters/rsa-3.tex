@@ -1,5 +1,18 @@
-Theo định lí CRT, với $p, q \in \mathcal{P}, q \neq q$ nếu $x = c^d\ mod \ n$, $n = pq$ thì $x$ cũng là nghiệm của hệ phương trình:
-\begin{equation}
+Định lí số dư trung hoa có nội dung như sau: Với $n_i \in \mathcal{P}, n_i \neq n_j\ \forall i \neq j$ và $a_i \in \mathbb{N}$. Hệ phương trình sau có nghiệm 
+duy nhất trong $\mathbb{Z}_{n_1n_2\hdots n_k}$
+\begin{equation}\label{sequations:abs-crt}
+\begin{cases}
+x &= a_1\ mod\ n_1 \\
+x &= a_2\ mod\ n_2 \\
+& \vdots \\
+x &= a_k\ mod\ n_k
+\end{cases}
+\end{equation}
+
+Chứng minh của Quisquater \& Couvreur trong \cite{Quisquater1982} thể hiện việc áp dụng CRT trong RSA như sau: Với $p, q \in \mathcal{P}, p \neq q$, $\phi\ =\ (p -1)(q-1)$, 
+$e,d \in \mathbb{N}, gcd(e,\phi)\ =\ 1, ed = 1\ mod\ \phi$, $n = pq$, nếu $x = c^d\ mod \ n$ thì $x$ cũng là nghiệm của hệ phương trình:
+
+\begin{equation}\label{sequations:crt-rsa}
 \begin{cases}
 x &= c^{d_1}\ mod\ p \\
 x &= c^{d_2}\ mod\ q
@@ -9,27 +22,20 @@ x &= c^{d_2}\ mod\ q
 với $d_1\ = d\ mod\ (p - 1), d_2\ =\ d\ mod\ (q - 1) $
 \end{center}
 
-Quá trình \textit{decrypt} cũng được cải thiện rõ rệt nhờ việc dùng định lí số dư Trung Hoa (CRT) vì thay vì tính $c^d$ và modulo $n$ thì kết quả có thể tính 
-được bằng các phép tính tương tự nhưng với số bit của $d_1, d_2, p, q$ nhỏ hơn nhiều so với số bit của $d, n$.
+Vận dụng \textit{(\ref{sequations:crt-rsa})}, quá trình \textit{decrypt} được cải thiện rõ rệt vì thay vì tính $c^d$ và modulo $n$ thì kết quả có thể tính 
+được bằng các phép tính tương tự nhưng với số bit của $p, q$ nhỏ hơn nhiều so với số bit của $d, n$.
 
-Cài đặt \textit{decrypt nhanh} là cài đặt giải hệ phương trình CRT tổng quát:
-\begin{equation}\label{sequations:abs-crt}
-\begin{cases}
-x &= a_1\ mod\ n_1 \\
-x &= a_2\ mod\ n_2 \\
-& \vdots \\
-x &= a_k\ mod\ n_k
-\end{cases}
-\end{equation}
-\begin{center}
-với $n_i \in \mathcal{P}, n_i \neq n_j\ \forall i \neq j$
-\end{center}
+Cài đặt \textit{decrypt nhanh} là cài đặt giải hệ phương trình CRT tổng quát \textit{(\ref{sequations:abs-crt})} từ đó giải \textit{(\ref{sequations:crt-rsa})}. 
 
-Cho trước hai số nguyên $a,b$, bằng thuật toán Euclid mở rộng ta có thể tìm được $x$ và $y$ thõa $ax + by = gcd(a,b)$. Trong \textit{hệ phương trình (\ref{sequations:abs-crt})} 
-ta thấy với $n=n_1n_2\hdots n_k$ thì $gcd(n_i,\frac{n}{n_i}) = 1$. Như vậy ta có thể tìm được $r_i$ và $s_i$ sao cho $n_i r_i + \frac{n}{n_i} s_i = 1$, 
-từ đó ta có thể tìm được nghiệm duy nhất của \textit{(\ref{sequations:abs-crt})} là $x = \sum_{i=1}^{k}a_is_i\frac{n}{n_i}$. \textit{Thuật toán \ref{solve-crt}} giải phương trình CRT tổng quát
+Cho trước hai số nguyên $a,b$ định lý Bezout phát biểu có thể tìm được $x$ và $y$ thỏa $ax + by = gcd(a,b)$. Trong \textit{hệ phương trình 
+(\ref{sequations:abs-crt})} ta thấy với $n=n_1n_2\hdots n_k, n_i \in \mathcal{P}$ thì $gcd(n_i,\frac{n}{n_i}) = 1$. Như vậy bằng thuật toán Euclid mở rộng (hoặc \textit{Bezout nhị phân} \cite{giaotrinh} như đã nêu ở phần trên) có thể tìm được 
+$r_i$ và $s_i$ sao cho $n_i r_i + \frac{n}{n_i} s_i = 1$, từ đó ta có thể tìm được nghiệm duy nhất của \textit{(\ref{sequations:abs-crt})} là $x = \sum_{i=1}^{k}a_is_i\frac{n}{n_i}$. 
+\textit{Thuật toán \ref{alg:solve-crt}} dùng để giải phương trình CRT tổng quát.
 
-\begin{algorithm}
+Ngoài ra, nếu tính và lưu trước giá trị $s_1\frac{n}{p}$ và $s_2\frac{n}{q}$ cùng với việc tính và lưu $e, d$ trong quá trình tạo keys của RSA thì khi \textit{decrypt} sẽ không phải 
+chạy lại thuật toán tìm $s_i$ do đó thời gian \textit{decrypt} có thể được rút ngắn hơn nữa.
+
+\begin{algorithm}[H]
 \caption{Giải hệ phương trình CRT}\label{alg:solve-crt}
 \hspace*{\algorithmicindent} \textbf{Input:} listA, listN: Danh sách $a_i$ và $n_i$\\
 \hspace*{\algorithmicindent} \textbf{Output:} x: Nghiệm của hệ phương trình CRT
@@ -45,7 +51,7 @@ từ đó ta có thể tìm được nghiệm duy nhất của \textit{(\ref{seq
 \State $n_i \gets listN[i]$
 \State $p \gets n/n_i$
 \State $a_i \gets listA[i]$
-\State $r,s \gets \textit{EXTEND\_EUCLID(n_i, p)}$
+\State $r,s \gets$ BinaryBezout($n_i$, p)
 \State $sum \gets a_i*s*p$
 \EndFor
 \State \textbf{Return } $sum\ \%\ n$

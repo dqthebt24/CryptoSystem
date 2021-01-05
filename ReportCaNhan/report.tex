@@ -43,6 +43,10 @@
 \addto{\captionsenglish}{\renewcommand*{\contentsname}{Mục lục}}
 \addto{\captionsenglish}{\renewcommand*{\refname}{Tài liệu tham khảo}}
 
+\captionsetup[table]{name=Bảng}
+\usepackage{array}
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+
 \begin{document}
 
 %----------------------------------------------------------------------------------------
@@ -81,9 +85,7 @@
 
 \subsection{Kiểm tra số nguyên tố}
 \input{chapters/setup-5}
-
-\newpage\cleardoublepage
-
+\cleardoublepage
 \section{Cài đặt tính toán cho RSA}
 \subsection{Phát sinh số nguyên tố mạnh}
 \input{chapters/rsa-1}
@@ -94,10 +96,11 @@
 \subsection{Giải mã nhanh dùng CRT}
 \input{chapters/rsa-3}
 
-\newpage\cleardoublepage
 \section{Kết quả đạt được}
-\newpage\cleardoublepage
+\input{chapters/result}
+
 \section{Kết luận}
+\input{chapters/conclusion}
 
 %----------------------------------------------------------------------------------------
 %	REFERENCES SECTION

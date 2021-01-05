@@ -1,8 +1,8 @@
 Đồ án dùng định lý Fermat nhỏ để kiểm tra số số giả nguyên tố mạnh với 4 cơ sở là bốn số tự nhiên. \textit{Thuật toán \ref{alg:is-prime}} mô tả cách kiểm tra số nguyên 
-tố.
+tố (tham khảo giáo trình).
 
 \begin{algorithm}
-\caption{Thuật toán PowerMod}\label{alg:is-prime}
+\caption{Kiểm tra số nguyên tố}\label{alg:is-prime}
 \hspace*{\algorithmicindent} \textbf{Input:} BigInt n\\
 \hspace*{\algorithmicindent} \textbf{Output:} True: là số nguyên tố, False: ngược lại 
 \begin{algorithmic}[1]
@@ -16,3 +16,5 @@ tố.
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
+
+\textit{Lưu ý: Có một vài số không phải là số nguyên tố nhưng thõa mãn định lý Fermat nhỏ gọi là \textbf{số Carmichael} ví dụ 3 số Carmichael nhỏ nhất là \textbf{561, 1105, 1729}. Tuy nhiên tỉ lệ gặp phải số Carmichael rất thấp\footnote{https://t.ly/1PtR} vì chỉ có khoảng \textbf{255 số Carmichael $<\ 10^8$} và khoảng \textbf{20138200 số Carmichael $<\ 10^{21}$}, do đó có thể dùng phép kiểm tra số nguyên tố như trên.}

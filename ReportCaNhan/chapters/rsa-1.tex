@@ -6,8 +6,8 @@ Phần cài đặt phát sinh số nguyên tố $n$ bits được thực hiện 
 $6n + 1$ hoặc số $6n - 1$ có phải số nguyên tố hay không, nếu một trong hai số trên là số nguyên tố thì chọn, ngược lại tăng $t$ lên 1 đơn vị và lặp lại quá trình. 
 \textit{Thuật toán \ref{alg:gen-prime}} mô tả cách tạo số nguyên tố $n$ bits.
 
-\begin{algorithm}
-\caption{Thuật toán GenPrime}\label{alg:gen-prime}
+\begin{algorithm} [H]
+\caption{Tạo số nguyên tố}\label{alg:gen-prime}
 \hspace*{\algorithmicindent} \textbf{Input:} $n$: số bits\\
 \hspace*{\algorithmicindent} \textbf{Output:} Số nguyên tố $n$ bits 
 \begin{algorithmic}[1]
@@ -15,11 +15,11 @@ $6n + 1$ hoặc số $6n - 1$ có phải số nguyên tố hay không, nếu m�
 \State $t \gets GenNumber(n-3)$ \Comment Tạo số nguyên $n-3$ bits
 \While{true}
 \State $t \gets 6n + 1$
-\If {\textit{ISPRIME(t)}}
+\If {\textit{IsPrime(t)}}
 \State \textbf{Return } $t$
 \EndIf
 \State $t \gets 6n - 1$
-\If {\textit{ISPRIME(t)}}
+\If {\textit{IsPrime(t)}}
 \State \textbf{Return } $t$
 \EndIf
 \State $t \gets t + 1$
@@ -35,7 +35,7 @@ $6n + 1$ hoặc số $6n - 1$ có phải số nguyên tố hay không, nếu m�
 A. Shamir and L. Adleman} năm 1978 (trang 9). Cụ thể, phát sinh một số nguyên tố $u$, sau đó tìm số nguyên tố đầu tiên trong dãy số $i*u + 1,\ i=2,4,6,...$\ \textit{Thuật toán \ref{alg:gen-strong-prime}} 
 thể hiện việc phát sinh số nguyên tố mạnh.
 
-\begin{algorithm}
+\begin{algorithm} [H]
 \caption{Phát sinh số nguyên tố mạnh}\label{alg:gen-strong-prime}
 \hspace*{\algorithmicindent} \textbf{Input:} n: số bits\\
 \hspace*{\algorithmicindent} \textbf{Output:} Số nguyên tố mạnh $\approx n$ bits 
@@ -56,5 +56,5 @@ thể hiện việc phát sinh số nguyên tố mạnh.
 \end{algorithm}
 
 Như trình bày ở trên nhóm tác giả R. L. Rivest phát triển cách phát sinh số nguyên tố mạnh (an toàn) nhằm tăng tính bảo mật cho RSA, tuy nhiên trong một bài báo sau 
-này \cite{AreStrongPrimesNeedForRsa} cũng của chính tác giả, tác giả có nói số nguyên tố mạnh không làm tăng tính bảo mật của RSA lên quá nhiều so với các số 
-nguyên tố lớn thông thường, do đó không cần thiết phải dùng số nguyên tố mạnh trong RSA (trang 1).
+này \cite{AreStrongPrimesNeedForRsa} \textit{(trang 1)} cũng của chính tác giả, tác giả có nói số nguyên tố mạnh không làm tăng tính bảo mật của RSA lên quá nhiều so với các số 
+nguyên tố lớn thông thường, do đó không cần thiết phải dùng số nguyên tố mạnh trong RSA.
