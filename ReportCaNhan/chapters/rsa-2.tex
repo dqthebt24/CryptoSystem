@@ -1,6 +1,6 @@
 Theo tham khảo tài liệu trên Iternet \footnote{https://t.ly/zGU9}\footnote{https://t.ly/LXCr} thì trong RSA thường chọn $e$ là các số nguyên tố nhỏ trong các số Fermat 
 \footnote{https://t.ly/nieN} ($e \in \{3,5,17,257,65537\}$) 
-rồi từ $e$ ta chọn $d$ sao cho $ed = 1\ mod\ \phi$.
+rồi từ $e$ ta chọn $d$ sao cho $ed \equiv 1\ (mod\ \phi)$.
 Tuy nhiên, như trong giáo trình môn học, để an toàn hơn không nên chọn trước số $e$ nhỏ rồi chọn $d$ vì $d$ có khả năng sẽ nhỏ, nên chọn các số $d \geq \sqrt[4]{n}$.
 \cleardoublepage
 Ở đây đồ án thực hiện chọn $e, d$ bằng cách chọn $e$ là các số nguyên tố $\geq 63357$, chọn $d$ tương ứng với mỗi $e$ được chọn sau đó kiểm tra điều kiện $d \geq \sqrt[4]{n}$ 
@@ -11,7 +11,7 @@ Thuật toán tìm $d$ khi biết $e, \phi$ được dùng là thuật toán Bez
 \begin{algorithm}[H]
 \caption{Tạo key $e$, $d$}\label{alg:gen-ed}
 \hspace*{\algorithmicindent} \textbf{Input:} $p, q$: Hai số nguyên tố lớn\\
-\hspace*{\algorithmicindent} \textbf{Output:} $e$, $d$ sao cho $ed = \ 1\ mod\ \phi\ ,\phi\ =\ (p\ -\ 1)(q\ -\ 1)$ 
+\hspace*{\algorithmicindent} \textbf{Output:} $e$, $d$ sao cho $ed \equiv \ 1\ (mod\ \phi)\ ,\phi\ =\ (p\ -\ 1)(q\ -\ 1)$ 
 \begin{algorithmic}[1]
 \Procedure{GenKeys}{$p, q$}
 \State $n \gets p*q$
@@ -19,14 +19,14 @@ Thuật toán tìm $d$ khi biết $e, \phi$ được dùng là thuật toán Bez
 \State $t \gets 10922$ \Comment $6t + 5 = 65537$
 \While {true}
 \State $e \gets 6t + 1$
-\If {\textit{ISPRIME($e$)}}
+\If {\textit{IsPrime($e$)}}
 \State $d \gets BinaryBezout(e, \phi)$
 \If {$d \geq \sqrt[4]{n}$}
 \State \textbf{break}
 \EndIf
 \EndIf
 \State $e \gets 6t+5$
-\If {\textit{ISPRIME($e$)}}
+\If {\textit{IsPrime($e$)}}
 \State $d \gets BinaryBezout(e, \phi)$
 \If {$d \geq \sqrt[4]{n}$}
 \State \textbf{break}

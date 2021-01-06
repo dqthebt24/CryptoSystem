@@ -41,12 +41,12 @@ thể hiện việc phát sinh số nguyên tố mạnh.
 \hspace*{\algorithmicindent} \textbf{Output:} Số nguyên tố mạnh $\approx n$ bits 
 \begin{algorithmic}[1]
 \Procedure{GenStrongPrime}{$n$}
-\State $u \gets GENPRIME(n-2)$ \Comment Tạo số nguyên tố $n-2$ bits
+\State $u \gets GenPrime(n-2)$ \Comment Tạo số nguyên tố $n-2$ bits
 \State $t \gets 1$
 \While{true}
 \State $i \gets 2t$
 \State $p \gets i*u + 1$
-\If {ISPRIME(p)}
+\If {$IsPrime(p)$}
 \State \textbf{Return } $p$
 \EndIf
 \State $t \gets t + 1$

@@ -1,0 +1,52 @@
+\documentclass[12pt]{article}
+\usepackage[T5]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[vietnamese,english]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage[figurename=Hình]{caption}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\author{Đỗ Quốc Thế}
+\title{Chứng minh CRT cho RSA}
+\begin{document}
+\maketitle
+
+\textbf{CRT}: Cho $n_i \in \mathcal{P},\ n_i \neq n_j, \forall i \neq j$, $a_i \in \mathbb{N}$. Hệ phương trình (\ref{sequations:abs-crt}) có nghiệm duy nhất trong $\mathbb{Z}_{n_1n_2\hdots n_k}$
+
+\begin{equation}\label{sequations:abs-crt}
+\begin{cases}
+x &\equiv a_1\ (mod\ n_1) \\
+x &\equiv a_2\ (mod\ n_2) \\
+& \vdots \\
+x &\equiv a_k\ (mod\ n_k)
+\end{cases}
+\end{equation}
+
+
+\textbf{RSA}: Cho $p,q \in \mathcal{P},\ p \neq q,\ n\ =\ pq,\ \phi=(p-1)(q-1),\ \phi(p)=p-1,\ \phi(q)=q-1$. Chọn $e$ sao cho $gcd(e,\phi)=1$, chọn $d$ sao cho $ed\equiv\ 1\ (mod\ \phi)$.
+
+\textbf{Encrypt}: $c=m^e\ mod\ n$
+
+\textbf{Decrypt}: $m=c^d\ mod\ n$
+
+Ta có: $m\ mod\ p=(c^d\ mod\ n)\ mod\ p =c^d\ mod\ p = c^{d\ mod\ \phi(p)}\ mod\ p$
+
+Giải thích: $d = k\phi(p) + d\ mod\ \phi(p)$
+
+$c^d\ mod\ p = c^{k\phi(p) + d\ mod\ \phi(p)}\ mod\ p=(c^{\phi(p)})^kc^{d\ mod\ \phi(p)}\ mod\ p = c^{d\ mod\ \phi(p)}\ mod\ p$
+
+Vậy ta có: 
+\begin{equation}\label{sequations:rsa-crt}
+\begin{cases}
+m \equiv c^{d\ mod\ \phi(p)} (mod\ p) \\
+m \equiv c^{d\ mod\ \phi(q)} (mod\ q)
+\end{cases}
+\end{equation}
+
+Giải hệ CRT (2) ta được $m$
+\end{document}

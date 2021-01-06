@@ -2,20 +2,20 @@
 duy nhất trong $\mathbb{Z}_{n_1n_2\hdots n_k}$
 \begin{equation}\label{sequations:abs-crt}
 \begin{cases}
-x &= a_1\ mod\ n_1 \\
-x &= a_2\ mod\ n_2 \\
+x &\equiv a_1\ (mod\ n_1) \\
+x &\equiv a_2\ (mod\ n_2) \\
 & \vdots \\
-x &= a_k\ mod\ n_k
+x &\equiv a_k\ (mod\ n_k)
 \end{cases}
 \end{equation}
 
 Chứng minh của Quisquater \& Couvreur trong \cite{Quisquater1982} thể hiện việc áp dụng CRT trong RSA như sau: Với $p, q \in \mathcal{P}, p \neq q$, $\phi\ =\ (p -1)(q-1)$, 
-$e,d \in \mathbb{N}, gcd(e,\phi)\ =\ 1, ed = 1\ mod\ \phi$, $n = pq$, nếu $x = c^d\ mod \ n$ thì $x$ cũng là nghiệm của hệ phương trình:
+$e,d \in \mathbb{N}, gcd(e,\phi)\ =\ 1, ed \equiv 1\ (mod\ \phi)$, $n = pq$, nếu $x = c^d\ mod \ n$ thì $x$ cũng là nghiệm của hệ phương trình:
 
 \begin{equation}\label{sequations:crt-rsa}
 \begin{cases}
-x &= c^{d_1}\ mod\ p \\
-x &= c^{d_2}\ mod\ q
+x &\equiv c^{d_1}\ (mod\ p) \\
+x &\equiv c^{d_2}\ (mod\ q)
 \end{cases}
 \end{equation}
 \begin{center}
