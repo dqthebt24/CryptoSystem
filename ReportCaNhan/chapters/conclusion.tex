@@ -3,5 +3,5 @@ Cách 2 dùng cách lưu trữ số nguyên dựa vào thư viện \textit{boost
 khi tự cài đặt lại \textit{class BigInt} tốn thời gian code (vì cần phải unittest để kiểm tra tính đúng đắn của code) mà thời gian chạy cũng không được nhanh, hơn 
 nữa việc cài đặt này là không cần thiết vì \textit{``reinvent the wheel``} không phải là cách hay.
 
-Tuy đã cố gắng rất nhiều nhưng đồ án không tránh khỏi những thiếu sót nhất định, mong nhận được sự đóng góp của thầy để hoàn thiện hơn về kĩ năng và kiến thức 
-cho những lần báo cáo tiếp theo. Cảm ơn thầy!
+Nhược điểm chủ yếu của việc viết lại lớp số nguyên lớn là yêu cầu phải xử lý số nguyên có dấu (vì các thuật toán như Bezout nhị phân hay Euclid mở rộng đều cần thao tác với số có dấu) tuy nhiên việc xử lý số có dấu tốn khá nhiều thời gian implement. Hơn nữa, với cách làm hiện tại thì việc chậm là hiển nhiên vì nếu số 1024 bits tức là 1024 \textit{char} trong con trỏ \textit{char*} $\rightarrow$ cần xử lý $8*1024 = 8192$ bits! Vậy nên để cải thiện tốc độ cần tối ưu thêm ở mức lưu trữ các bits số mà hiện tại \textit{boost::multiprecision} đã thực hiện điều đó.
+

@@ -2,20 +2,20 @@
 duy nhất trong $\mathbb{Z}_{n_1n_2\hdots n_k}$
 \begin{equation}\label{sequations:abs-crt}
 \begin{cases}
-x &\equiv a_1\ (mod\ n_1) \\
-x &\equiv a_2\ (mod\ n_2) \\
+x &= a_1\ mod\ n_1 \\
+x &= a_2\ mod\ n_2 \\
 & \vdots \\
-x &\equiv a_k\ (mod\ n_k)
+x &= a_k\ mod\ n_k
 \end{cases}
 \end{equation}
-
+\cleardoublepage
 Chứng minh của Quisquater \& Couvreur trong \cite{Quisquater1982} thể hiện việc áp dụng CRT trong RSA như sau: Với $p, q \in \mathcal{P}, p \neq q$, $\phi\ =\ (p -1)(q-1)$, 
-$e,d \in \mathbb{N}, gcd(e,\phi)\ =\ 1, ed \equiv 1\ (mod\ \phi)$, $n = pq$, nếu $x = c^d\ mod \ n$ thì $x$ cũng là nghiệm của hệ phương trình:
+$e,d \in \mathbb{N}, gcd(e,\phi)\ =\ 1, ed = 1\ mod\ \phi$, $n = pq$, nếu $x = c^d\ mod \ n$ thì $x$ cũng là nghiệm của hệ phương trình:
 
 \begin{equation}\label{sequations:crt-rsa}
 \begin{cases}
-x &\equiv c^{d_1}\ (mod\ p) \\
-x &\equiv c^{d_2}\ (mod\ q)
+x &= c^{d_1}\ mod\ p \\
+x &= c^{d_2}\ mod\ q
 \end{cases}
 \end{equation}
 \begin{center}
@@ -29,11 +29,8 @@ Cài đặt \textit{decrypt nhanh} là cài đặt giải hệ phương trình C
 
 Cho trước hai số nguyên $a,b$ định lý Bezout phát biểu có thể tìm được $x$ và $y$ thỏa $ax + by = gcd(a,b)$. Trong \textit{hệ phương trình 
 (\ref{sequations:abs-crt})} ta thấy với $n=n_1n_2\hdots n_k, n_i \in \mathcal{P}$ thì $gcd(n_i,\frac{n}{n_i}) = 1$. Như vậy bằng thuật toán Euclid mở rộng (hoặc \textit{Bezout nhị phân} \cite{giaotrinh} như đã nêu ở phần trên) có thể tìm được 
-$r_i$ và $s_i$ sao cho $n_i r_i + \frac{n}{n_i} s_i = 1$, từ đó ta có thể tìm được nghiệm duy nhất của \textit{(\ref{sequations:abs-crt})} là $x \equiv \sum_{i=1}^{k}a_is_i\frac{n}{n_i}\ (mod\ n)$. 
+$r_i$ và $s_i$ sao cho $n_i r_i + \frac{n}{n_i} s_i = 1$, từ đó ta có thể tìm được nghiệm duy nhất của \textit{(\ref{sequations:abs-crt})} là $x = \sum_{i=1}^{k}a_is_i\frac{n}{n_i}$. 
 \textit{Thuật toán \ref{alg:solve-crt}} dùng để giải phương trình CRT tổng quát.
-
-Ngoài ra, nếu tính và lưu trước giá trị $s_1\frac{n}{p}$ và $s_2\frac{n}{q}$ cùng với việc tính và lưu $e, d$ trong quá trình tạo keys của RSA thì khi \textit{decrypt} sẽ không phải 
-chạy lại thuật toán tìm $s_i$ do đó thời gian \textit{decrypt} có thể được rút ngắn hơn nữa.
 
 \begin{algorithm}[H]
 \caption{Giải hệ phương trình CRT}\label{alg:solve-crt}
@@ -58,3 +55,6 @@ chạy lại thuật toán tìm $s_i$ do đó thời gian \textit{decrypt} có t
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
+
+Ngoài ra, nếu tính và lưu trước giá trị $s_1\frac{n}{p}$ và $s_2\frac{n}{q}$ cùng với việc tính và lưu $e, d$ trong quá trình tạo keys của RSA thì khi \textit{decrypt} sẽ không phải 
+chạy lại thuật toán tìm $s_i$ do đó thời gian \textit{decrypt} có thể được rút ngắn hơn nữa.

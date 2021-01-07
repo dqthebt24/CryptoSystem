@@ -11,14 +11,6 @@
 \usepackage[figurename=Hình]{caption}
 \usepackage{algorithm}
 \usepackage[noend]{algpseudocode}
-
-\hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    filecolor=magenta,      
-    urlcolor=cyan,
-}
-
 \author{Đỗ Quốc Thế}
 \title{Chứng minh CRT cho RSA}
 \begin{document}
@@ -41,29 +33,12 @@ x &\equiv a_k\ (mod\ n_k)
 \textbf{Encrypt}: $c=m^e\ mod\ n$
 
 \textbf{Decrypt}: $m=c^d\ mod\ n$
-\vskip 0.2in
-\textbf{Ta thấy}: 
 
-$m\ mod\ p=(c^d\ mod\ n)\ mod\ p =c^d\ mod\ p = c^{d\ mod\ \phi(p)}\ mod\ p$
+Ta có: $m\ mod\ p=(c^d\ mod\ n)\ mod\ p =c^d\ mod\ p = c^{d\ mod\ \phi(p)}\ mod\ p$
 
-$\Rightarrow m \equiv c^{d\ mod\ \phi(p)}\ (mod\ p)$
+Giải thích: $d = k\phi(p) + d\ mod\ \phi(p)$
 
-
-Tương tự: 
-
-$m \equiv c^{d\ mod\ \phi(q)}\ (mod\ q)$
-
-\vskip 0.2in
-\textbf{Giải thích}: Đặt $d = k\phi(p) + d\ mod\ \phi(p)$
-
-\begin{equation*}
-\begin{array}{l@{}l}
-c^d\ mod\ p &{}= c^{k\phi(p) + d\ mod\ \phi(p)}\ mod\ p\\
-&{}=(c^{\phi(p)})^kc^{d\ mod\ \phi(p)}\ mod\ p \\
-&{}=(1)^kc^{d\ mod\ \phi(p)}\ mod\ p \\
-&{}= c^{d\ mod\ \phi(p)}\ mod\ p
-\end{array}
-\end{equation*}
+$c^d\ mod\ p = c^{k\phi(p) + d\ mod\ \phi(p)}\ mod\ p=(c^{\phi(p)})^kc^{d\ mod\ \phi(p)}\ mod\ p = c^{d\ mod\ \phi(p)}\ mod\ p$
 
 Vậy ta có: 
 \begin{equation}\label{sequations:rsa-crt}
@@ -74,23 +49,4 @@ m \equiv c^{d\ mod\ \phi(q)} (mod\ q)
 \end{equation}
 
 Giải hệ CRT (2) ta được $m$
-
-\vskip 0.2in
-\textbf{Tìm nghiệm của hệ pt}:
-
-\begin{equation}\label{sequations:abs-crt}
-\begin{cases}
-x &\equiv a\ (mod\ p) \\
-x &\equiv b\ (mod\ q) \\
-\end{cases}
-\end{equation}
-\begin{center}
-với $p,q\in \mathcal{P}$
-\end{center}
-
-Vì $p,q\in \mathcal{P}$ $\Rightarrow \exists p'\equiv p^{-1}\ (mod\ q),\ \exists q'\equiv q^{-1}\ (mod\ p)$
-\vskip 0.2in
-Đặt $y=aq'q + bp'p$, ta thấy: $y \equiv a\ (mod\ p)$ và  $y \equiv b\ (mod\ q)$
-
-$\Rightarrow y$ là nghiệm duy nhất của (3) trong $\mathbb{Z}_{pq}$
 \end{document}
