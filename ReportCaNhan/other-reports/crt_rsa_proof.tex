@@ -11,11 +11,20 @@
 \usepackage[figurename=Hình]{caption}
 \usepackage{algorithm}
 \usepackage[noend]{algpseudocode}
+\usepackage{enumerate}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    citecolor=black,
+}
+
 \author{Đỗ Quốc Thế}
 \title{Chứng minh CRT cho RSA}
 \begin{document}
 \maketitle
-
+\section{Chứng minh CRT cho RSA}
 \textbf{CRT}: Cho $n_i \in \mathcal{P},\ n_i \neq n_j, \forall i \neq j$, $a_i \in \mathbb{N}$. Hệ phương trình (\ref{sequations:abs-crt}) có nghiệm duy nhất trong $\mathbb{Z}_{n_1n_2\hdots n_k}$
 
 \begin{equation}\label{sequations:abs-crt}
@@ -38,7 +47,14 @@ Ta có: $m\ mod\ p=(c^d\ mod\ n)\ mod\ p =c^d\ mod\ p = c^{d\ mod\ \phi(p)}\ mod
 
 Giải thích: $d = k\phi(p) + d\ mod\ \phi(p)$
 
-$c^d\ mod\ p = c^{k\phi(p) + d\ mod\ \phi(p)}\ mod\ p=(c^{\phi(p)})^kc^{d\ mod\ \phi(p)}\ mod\ p = c^{d\ mod\ \phi(p)}\ mod\ p$
+\begin{equation*}
+\begin{array}{l@{}l}
+c^d\ mod\ p &{}=c^{k\phi(p) + d\ mod\ \phi(p)}\ mod\ p\\
+    &{}= (c^{\phi(p)})^kc^{d\ mod\ \phi(p)}\ mod\ p \\
+    &{}= 1^kc^{d\ mod\ \phi(p)}\ mod\ p\ \ \ \ \ \textit{(theo định lí Fermat nhỏ)}\\
+    &{}= c^{d\ mod\ \phi(p)}\ mod\ p
+\end{array}
+\end{equation*}
 
 Vậy ta có: 
 \begin{equation}\label{sequations:rsa-crt}
@@ -49,4 +65,46 @@ m \equiv c^{d\ mod\ \phi(q)} (mod\ q)
 \end{equation}
 
 Giải hệ CRT (2) ta được $m$
+\section{Chứng minh RSA đúng}
+\subsection{Các bước thực hiện RSA}
+
+\begin{enumerate}[ {(}1{)} ]
+        \item Chọn 2 số nguyên tố lớn $p,q$
+        \item Tính $n=pq,\ \phi= (p-1)(q-1)$
+        \item Chọn $e\in[2, \phi - 1]$ sao cho $gcd(e, \phi) = 1$
+        \item Tìm $d \in [2, \phi - 1]$ sao cho $ed \equiv 1\ (mod\ \phi)$
+
+        $d$ là số duy nhất cần tìm và $gcd(d,\phi)=1$
+        \item Công bố $(e, n)$ là public key
+        \item Giữ $(d, n)$ là private key
+\end{enumerate}
+
+\subsection{Chứng minh RSA}
+\subsubsection{d duy nhất}
+\subsubsection{Giải mã đúng }
+Ta cần chứng minh: $m=(m^e)^d\ mod\ n$
+
+Ta có $m$ là nghiệm duy nhất trong $\mathbb{Z}_n$ của hệ (\ref{sequations:rsa-crt-proof}) \textit{(theo chứng minh ở (\ref{sequations:rsa-crt}))}:
+\begin{equation}\label{sequations:rsa-crt-proof}
+\begin{cases}
+m \equiv c^d\ (mod\ p) \\
+m \equiv c^d\ (mod\ q)
+\end{cases}
+\end{equation}
+
+Ta cần chứng minh $m^{ed}\equiv c^d\ (mod\ p)$ và $m^{ed}\equiv c^d\ (mod\ q)$.
+
+Thật vậy, ta có:
+
+\begin{equation*}
+\begin{array}{l@{}l}
+m^{ed} &{}\equiv m^{k\phi + 1}\ (mod\ p)\\
+    &{}\equiv  m.m^{k(p-1)(q-1)}\ (mod\ p) \\
+    &{}\equiv m.1^{k(q-1)}\ (mod\ p)\ \ \ \ \ \textit{(theo định lí Fermat nhỏ)}\\
+    &{}\equiv m\ (mod\ p)
+\end{array}
+\end{equation*}
+
+Tương tự, ta có: $m^{ed} \equiv m\ (mod\ p)$
+
 \end{document}
