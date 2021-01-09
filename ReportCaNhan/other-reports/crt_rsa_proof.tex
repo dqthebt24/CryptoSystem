@@ -81,33 +81,106 @@ Giải hệ CRT (2) ta được $m$
 
 \subsection{Chứng minh RSA}
 \subsubsection{d duy nhất}
-\subsubsection{Giải mã đúng }
-Ta cần chứng minh: $m=(m^e)^d\ mod\ n$
+Ta có $ed \equiv 1\ (mod\ \phi)$
 
-Ta có $m$ là nghiệm duy nhất trong $\mathbb{Z}_n$ của hệ (\ref{sequations:rsa-crt-proof}) \textit{(theo chứng minh ở (\ref{sequations:rsa-crt}))}:
-\begin{equation}\label{sequations:rsa-crt-proof}
+Giả sử $\exists d' \neq d \in \mathbb{Z}_{\phi}$ sao cho $ed' \equiv 1\ (mod\ \phi)$
+
+Ta có: 
+$ed = k\phi + 1$, $ed'=k'\phi+1$
+
+$\Rightarrow\ ed -ed' = (k-k')\phi$
+
+$\Rightarrow\ \phi\ |\ ed - ed'$
+
+$\Rightarrow\ \phi\ |\ e(d - d')$
+
+mà $gcd(e,\phi) = 1$ $\Rightarrow \phi\ |\ d - d'$
+
+$\Rightarrow d \equiv d'\ (mod\ \phi)$
+
+\subsubsection{Giải mã đúng }
+Ta cần chứng minh: $m=(m^e)^d\ mod\ n$\\
+Trước hết, ta có:
+Với $p,q \in \mathcal{P}$
+\begin{equation*}
 \begin{cases}
-m \equiv c^d\ (mod\ p) \\
-m \equiv c^d\ (mod\ q)
+x &{} \equiv y\ (mod\ p)\\
+x &{} \equiv y\ (mod\ q)
 \end{cases}
+\end{equation*}
+Thì $x \equiv y\ (mod\ pq)$
+
+\underline{\textit{Chứng minh}}:
+
+\[
+\left\{
+\begin{aligned}
+  x - y &=kp \\
+  x-y&=k'q
+\end{aligned}
+\right.
+\qquad\Rightarrow\qquad
+\left\{
+\begin{aligned}
+  p\ |\ x - y\\
+  q\ |\ x - y\\
+\end{aligned}
+\right.
+\]
+
+mà $gcd(p,q) = 1$ $\Rightarrow \ pq\ |\ x-y$
+
+$\Rightarrow x \equiv y\ (mod\ pq)$
+
+Ta có:
+
+\begin{equation}\label{sequations:rsa-proof}
+\begin{array}{l@{}l}
+(m^e)^d\ mod\ n\ &= m^{ed}\ mod\ n\\
+&= m^{k\phi + 1}\ mod\ n\\
+    &=  m.m^{k(p-1)(q-1)}\ mod\ n
+\end{array}
 \end{equation}
 
-Ta cần chứng minh $m^{ed}\equiv c^d\ (mod\ p)$ và $m^{ed}\equiv c^d\ (mod\ q)$.
-
-Thật vậy, ta có:
+Xét $x = m^{k(p-1)(q-1)}$ ta có:
 
 \begin{equation*}
 \begin{array}{l@{}l}
-m^{ed} &{}\equiv m^{k\phi + 1}\ (mod\ p)\\
-    &{}\equiv  m.m^{k(p-1)(q-1)}\ (mod\ p) \\
-    &{}\equiv m.1^{k(q-1)}\ (mod\ p)\ \ \ \ \ \textit{(theo định lí Fermat nhỏ)}\\
-    &{}\equiv m\ (mod\ p)
+x\ mod\ p &{}=m^{k(p-1)(q-1)}\ mod\ p\\
+    &{}= (m^{p-1})^{k(q-1)}\ mod\ p \\
+    &{}= 1^{k(q-1)}\ mod\ p\ \ \ \ \ \textit{(theo định lí Fermat nhỏ)}\\
+    &{}= 1
 \end{array}
 \end{equation*}
 
-Tương tự, ta có: $m^{ed} \equiv m\ (mod\ p)$
+$\Rightarrow x \equiv 1\ (mod\ p)$
 
-Như vậy $m^{ed}\ (mod\ p) \equiv m\ (mod\ p)$ và $m^{ed}\ (mod\ q) \equiv m\ (mod\ q)$
+\begin{equation*}
+\begin{array}{l@{}l}
+x\ mod\ q &{}=m^{k(p-1)(q-1)}\ mod\ q\\
+    &{}= (m^{q-1})^{k(p-1)}\ mod\ q \\
+    &{}= 1^{k(p-1)}\ mod\ q\ \ \ \ \ \textit{(theo định lí Fermat nhỏ)}\\
+    &{}= 1
+\end{array}
+\end{equation*}
 
-vậy $m^{ed} \equiv m$ trong $\mathbb{Z}_n$
+$\Rightarrow x \equiv 1\ (mod\ q)$
+
+Vậy ta có: 
+
+\[
+\left\{
+\begin{aligned}
+  x &\equiv 1\ mod\ p\\
+  x &\equiv 1\ mod\ q
+\end{aligned}
+\right.
+\qquad\Rightarrow\qquad
+x \equiv 1\ mod\ pq
+\qquad\Rightarrow\qquad
+x \equiv 1\ mod\ n 
+\]
+
+(\ref{sequations:rsa-proof}) $\Rightarrow (m^e)^d\ mod\ n\ = m.m^{k(p-1)(q-1)}\ mod\ n = m\ mod\ n$ 
+
 \end{document}
