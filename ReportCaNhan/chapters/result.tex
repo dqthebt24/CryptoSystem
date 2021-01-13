@@ -1,6 +1,6 @@
 Trong cách làm 1 (xây dựng lại class BigInt), dù đã cải tiến rất nhiều về cách code như chuyển từ lưu trữ chuỗi nhị phân bằng \textit{std::string} sang \textit{char*}, chuyển từ dùng 
 \textit{strcpy} sang \textit{memcpy}, dùng \textit{memset}, $\hdots$ chương trình đạt được tốc độ runtime cũng tương đối tốt tuy nhiên vẫn còn chậm hơn rất 
-nhiều so với cách làm 2 (dùng \textit{boost::multiprecision}). Dưới đây là bảng so sánh hai cách làm với số nguyên 512 bits và các kết quả khi thực hiện các phép tính với theo cách làm 2.
+nhiều so với cách làm 2 (dùng \textit{boost::multiprecision}). Dưới đây là bảng so sánh hai cách làm với số nguyên 512 bits và các kết quả khi thực hiện các phép tính với theo cách làm 2 trên môi trường \textit{Ubuntu 16.04}, \textit{CPU Intel Core i3 3.30GHz}.
 
 \begin{center}
 \begin{table}[H]
