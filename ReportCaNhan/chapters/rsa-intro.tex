@@ -6,7 +6,7 @@ Mã hóa RSA thực hiện qua các bước sau:
         \item Chọn $e\in[2, \phi - 1]$ sao cho $gcd(e, \phi) = 1$
         \item Tìm $d \in [2, \phi - 1]$ sao cho $ed \equiv 1\ [mod\ \phi]$
 
-        $d$ là số duy nhất cần tìm và $gcd(d,\phi)=1$
+        $d$ là số duy nhất cần tìm trong $\mathbb{Z}_{\phi}$
         \item Công bố $(e, n)$ là public key, giữ $(d, n)$ là private key
         \item Mã hóa thông điệp $m$: $c = m^e\ mod\ n$
         \item Giải mã $c$: $m = c^d\ mod\ n$
