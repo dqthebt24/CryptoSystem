@@ -14,13 +14,13 @@ $6n + 1$ hoặc số $6n - 1$ có phải số nguyên tố hay không, nếu m�
 \Procedure{GenPrime}{$n$}
 \State $t \gets GenNumber(n-3)$ \Comment Tạo số nguyên $n-3$ bits
 \While{true}
-\State $t \gets 6n + 1$
-\If {\textit{IsPrime(t)}}
-\State \textbf{Return } $t$
+\State $m \gets 6t + 1$
+\If {\textit{IsPrime(m)}}
+\State \textbf{Return } $m$
 \EndIf
-\State $t \gets 6n - 1$
-\If {\textit{IsPrime(t)}}
-\State \textbf{Return } $t$
+\State $m \gets 6t - 1$
+\If {\textit{IsPrime(m)}}
+\State \textbf{Return } $m$
 \EndIf
 \State $t \gets t + 1$
 \EndWhile
