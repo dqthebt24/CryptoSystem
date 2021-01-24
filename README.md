@@ -17,7 +17,8 @@ This the RSA 2048 bits implementation using C++ with [Boost::multiprecision](htt
 
 
 ## Basic setup
-RSA does things with primes which are iteger numbers. To increase the security of the system, one easy step we can do is increase the size of integer. For RSA 2048 bits, `p, q` are 1024 bits integers then `p*q` is nearly 2048 bits. The most important thing is how to represent a very large integer like 1024 or 2048 bits. The first way we can think about is write a **BigInt** class, with C++, we can overload operators like +, -, \*, /, etc. The second way is easier, this is also the way this repo implemented, that is using a library. The library is used here is Boost. Next session will show how to represent a very big number by Boost::multiprecision.
+
+RSA does things with primes which are integer numbers. To increase the security of the system, one easy step we can do is increase the size of an integer. For RSA 2048 bits, `p,q` are 1024 bits integers then `p*q` is nearly 2048 bits. The most important thing is how to represent a very large integer like 1024 or 2048 bits. The first way we can think about is to write a BigInt class, with C++, we can overload operators like +, -, \*, /, etc. The second way is easier, this is also the way this repo implemented, that is using a library. The library used here is Boost. The next session will show how to represent a very big number by Boost::multiprecision.
 
 ### Big number data type
 ### Mod calculation
