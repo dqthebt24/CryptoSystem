@@ -23,6 +23,8 @@ RSA does things with primes which are integer numbers. To increase the security 
 ### Big number data type
 Using this code to define a new data type for big number.
 ````C++
+#include <boost/multiprecision/cpp_int.hpp>
+
 namespace mp = boost::multiprecision;
 typedef mp::number<mp::cpp_int_backend<4096, 4096, mp::signed_magnitude, mp::unchecked, void> >  number_t; // int4096_t
 ````
