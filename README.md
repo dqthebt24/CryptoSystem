@@ -35,7 +35,7 @@ From now, we can use the data type **number_t** for 4096 bits numbers.
 
 For RSA only 2048 bits with the **number_t** above, we can do **MulMod** by doing **multiply** first then doing **modulo**. Because for *a,b* 1024 bits then ![amulb](https://latex.codecogs.com/gif.latex?a*b) is at most 2048 bits when **number_t** can be used for 4096 bits number. Below is **MulMod** algorithm.
 
-[mulmod_img](./Images/mulmod_alg.jpg)
+![mulmod_img](./Images/mulmod_alg.jpg)
 
 ### PowMod calculation
 **MulMod** is giving 3 numbers *a, b, n* then caculate ![powmod](https://latex.codecogs.com/gif.latex?a%5Eb%25n).
