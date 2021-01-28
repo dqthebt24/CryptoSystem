@@ -17,7 +17,7 @@ This the RSA 2048 bits implementation using C++ with [Boost::multiprecision](htt
 
 ## Basic setup
 
-RSA does things with primes which are integer numbers. To increase the security of the system, one easy step we can do is increase the size of an integer. For RSA 2048 bits, `p,q` are 1024 bits integers then `p*q` is nearly 2048 bits. The most important thing is how to represent a very large integer like 1024 or 2048 bits. The first way we can think about is to write a BigInt class, with C++, we can overload operators like +, -, \*, /, etc. The second way is easier, this is also the way this repo implemented, that is using a library. The library used here is Boost. The next session will show how to represent a very big number by Boost::multiprecision. To install Boost library, follow this [tutorial for Windows](https://https://tomkoos.github.io/cpp/boost-vs.html) or [tutorial for Linux](https://onethinglab.com/2019/01/30/how-to-install-latest-boost-library-on-ubuntu/).
+The library used here is Boost. The next session will show how to represent a very big number by Boost::multiprecision. To install Boost library, follow this [tutorial for Windows](https://https://tomkoos.github.io/cpp/boost-vs.html) or [tutorial for Linux](https://onethinglab.com/2019/01/30/how-to-install-latest-boost-library-on-ubuntu/).
 
 ### Big number data type
 Using this code to define a new data type for big number.
@@ -42,13 +42,21 @@ For RSA only 2048 bits with the **number_t** above, we can do **MulMod** by doin
 
 ### PowMod calculation
 **MulMod** is giving 3 numbers *a, b, n* then caculate ![powmod](https://latex.codecogs.com/gif.latex?a%5Eb%25n).
-We cannot do `pow` first then `mod` because it can be *overflow*, do **MulMod** using below algorithm.
+Do **MulMod** using below algorithm.
 
 <p align="center">
   <img alt="drawing" width="550" height="320" src="./Images/powmod_alg.jpg" />
 </p>
 
 ### Primes test
+Using [Fermat little theorem](https://en.wikipedia.org/wiki/Fermat%27s_little_theorem) and [Pseudo prime](https://en.wikipedia.org/wiki/Pseudoprime), create algorithm to check a pseudo prime with some bases `{2,5,7,9}`. The algorithm is below
+
+<p align="center">
+  <img alt="drawing" width="450" height="230" src="./Images/check_prime.jpg" />
+</p>
+
+*Note:* ***Carmichael numbers*** *are composite numbers that satisfies the Fermat’s little theorem. But we also can use Fermat’s little theorem to check primes because the probability that `n` is a Carmichael numbers is very small. The first 3 Carmichael numbers are* ***561***, ***1105*** *and* ***1729***.
+
 ## RSA calculations
 ### Generate strong primes
 ### Find e and d
