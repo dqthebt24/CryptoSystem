@@ -52,7 +52,7 @@ Do **MulMod** using below algorithm.
 Using [Fermat little theorem](https://en.wikipedia.org/wiki/Fermat%27s_little_theorem) and [Pseudo prime](https://en.wikipedia.org/wiki/Pseudoprime), create algorithm to check a pseudo prime with some bases `{2,5,7,9}`. The algorithm is below
 
 <p align="center">
-  <img alt="drawing" width="450" height="230" src="./Images/check_prime.jpg" />
+  <img alt="drawing" width="350" height="180" src="./Images/check_prime.jpg" />
 </p>
 
 *Note:* ***Carmichael numbers*** *are composite numbers that satisfies the Fermat’s little theorem. But we also can use Fermat’s little theorem to check primes because the probability that `n` is a Carmichael numbers is very small. The first 3 Carmichael numbers are* ***561***, ***1105*** *and* ***1729***.
