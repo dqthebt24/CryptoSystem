@@ -58,6 +58,22 @@ Using [Fermat little theorem](https://en.wikipedia.org/wiki/Fermat%27s_little_th
 *Note:* ***Carmichael numbers*** *are composite numbers that satisfies the Fermat’s little theorem. But we also can use Fermat’s little theorem to check primes because the probability that `n` is a Carmichael numbers is very small. The first 3 Carmichael numbers are* ***561***, ***1105*** *and* ***1729***.
 
 ## RSA calculations
+The steps of RSA calculations are:
+
+![](https://latex.codecogs.com/gif.latex?1.%5C%20Choose%5C%202%5C%20big%5C%20primes%5C%20p%2Cq)
+
+![](https://latex.codecogs.com/gif.latex?2.%5C%20Calculate%5C%20n%5C%20%3D%5C%20pq%2C%5C%20%5Cphi%5C%20%3D%5C%20%28p-1%29%28q-1%29)
+
+![](https://latex.codecogs.com/gif.latex?3.%5C%20Choose%5C%20e%5Cin%20%5B2%2C%5Cphi-1%5D%5C%20satifies%5C%20gcd%28e%2C%5Cphi%29%3D1)
+
+![](https://latex.codecogs.com/gif.latex?4.%5C%20Find%5C%20d%5Cin%20%5B2%2C%5Cphi-1%5D%5C%20satifies%5C%20ed%5Cequiv%5C%201%5C%20%5Bmod%5C%20%5Cphi%5D)
+
+![](https://latex.codecogs.com/gif.latex?5.%5C%20Public%5C%20%28e%2Cn%29%5C%20keep%5C%20%28d%2Cn%29)
+
+![](https://latex.codecogs.com/gif.latex?6.%5C%20Encrypt%5C%20message%5C%20m%3A%5C%20c%5C%20%3D%5C%20m%5Ee%5C%20mod%5C%20n)
+
+![](https://latex.codecogs.com/gif.latex?7.%5C%20Decrypt%5C%20ecrypted%5C%20message%5C%20c%3A%5C%20m%5C%20%3D%5C%20c%5Ed%5C%20mod%5C%20n)
+
 ### Generate strong primes
 ### Find e and d
 ### Fast decryption using CRT
