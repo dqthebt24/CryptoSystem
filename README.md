@@ -42,7 +42,7 @@ For RSA only 2048 bits with the **number_t** above, we can do **MulMod** by doin
 
 ### PowMod calculation
 **MulMod** is giving 3 numbers *a, b, n* then caculate ![powmod](https://latex.codecogs.com/gif.latex?a%5Eb%25n).
-Do **MulMod** using below algorithm.
+Do **MulMod** using below algorithm(from \[[1](#ref1)\]).
 
 <p align="center">
   <img alt="drawing" width="550" height="320" src="./Images/powmod_alg.jpg" />
@@ -78,4 +78,4 @@ The steps of RSA calculations are:
 ### Find e and d
 ### Fast decryption using CRT
 ## References
-
+[1] Bùi Doãn Khanh và Nguyễn Đình Thúc. Giáo trình mã hóa thông tin: Lý thuyết và ứng dụng, 2004. <a name="ref1"></a>
