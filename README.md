@@ -75,7 +75,18 @@ The steps of RSA calculations are:
 ![](https://latex.codecogs.com/gif.latex?7.%5C%20Decrypt%5C%20ecrypted%5C%20message%5C%20c%3A%5C%20m%5C%20%3D%5C%20c%5Ed%5C%20mod%5C%20n)
 
 ### Generate strong primes
+- Two important properties:
+	- ***All primes (past 2 and 3) are of the forms 6n+1 and 6n-1*** ([proof](https://primes.utm.edu/notes/faq/six.html)).
+	- If `a` is `n` bits number, `b` is `m` bits number. Than `a*b` will have at most `n + m + 2` bits number. (\[[2](#ref2)\]).
+- With the two properties above, the below algorithm wil generate a prime
+
+<p align="center">
+  <img alt="drawing" width="450" height="250" src="./Images/genprime_alg.jpg" />
+</p>
+
 ### Find e and d
 ### Fast decryption using CRT
 ## References
 [1] Bùi Doãn Khanh và Nguyễn Đình Thúc. Giáo trình mã hóa thông tin: Lý thuyết và ứng dụng, 2004. <a name="ref1"></a>
+
+[2] Alfred J. Menezes, Scott A. Vanstone, and Paul C. Van Oorschot. Handbook of Applied Cryptography. CRC Press, Inc., USA, 1st edition, 1996. <a name="ref2"></a>
