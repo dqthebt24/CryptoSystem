@@ -98,16 +98,17 @@ The steps of RSA calculations are:
 
 In step (3), (4). Do: 
 
-- Pick `e` is a prime > 65535.
+- Pick `e` is a prime ![](https://latex.codecogs.com/gif.latex?%5Cgeq) 65535.
 - Find d satifies ![](https://latex.codecogs.com/gif.latex?d%20%5Cgeq%20%5Csqrt%5B4%5D%7Bn%7D)
 
 <p align="center">
   <img alt="drawing" width="550" height="400" src="./Images/genkey_alg.jpg" />
 </p>
 
-- *BinaryBezout algorithm* to find `d` satifies `ed + ϕx = gcd(e,ϕ)`.
+- *BinaryBezout algorithm* to find `d` satifies ![](https://latex.codecogs.com/gif.latex?ed%20&plus;%20x%5Cphi%20%3D%20gcd%28e%2C%5Cphi%29).
 
 ### Fast decryption using CRT
+- From [2]
 ## References
 [1] Bùi Doãn Khanh và Nguyễn Đình Thúc. Giáo trình mã hóa thông tin: Lý thuyết và ứng dụng, 2004. <a name="ref1"></a>
 
