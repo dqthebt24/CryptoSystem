@@ -122,6 +122,15 @@ In step (3), (4). Do:
   <img alt="drawing" src="https://latex.codecogs.com/gif.latex?%5Csmall%20%5Cbegin%7Bcases%7D%20%26%20x%20%5Cequiv%20c%5E%7Bd_1%7D%5C%20%5Bmod%5C%20p%5D%20%5C%5C%20%26%20x%20%5Cequiv%20c%5E%7Bd_2%7D%5C%20%5Bmod%5C%20q%5D%20%5Cend%7Bcases%7D" />
 </p>
 
+- Below algorithm solve the CRT equation 
+
+<p align="center">
+  <img alt="drawing" src="https://latex.codecogs.com/gif.latex?%5Csmall%20x%20%5Cequiv%20a_i%5C%20%5Bmod%5C%20n_i%5D%5C%5C%20%5Cforall%20n_i%20%5Cin%20%5Cmathcal%7BP%7D%2C%20a_i%20%5Cin%20%5Cmathbb%7BN%7D%2C%20i%20%5Cneq%20j%20%5CRightarrow%20n_i%20%5Cneq%20n_j" />
+</p>
+
+<p align="center">
+  <img alt="drawing" width="550" height="330" src="./Images/crt_algorithm.jpg" />
+</p>
 
 ## References
 [1] Bùi Doãn Khanh và Nguyễn Đình Thúc. Giáo trình mã hóa thông tin: Lý thuyết và ứng dụng, 2004. <a name="ref1"></a>
