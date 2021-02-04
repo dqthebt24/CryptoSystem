@@ -75,18 +75,42 @@ The steps of RSA calculations are:
 ![](https://latex.codecogs.com/gif.latex?7.%5C%20Decrypt%5C%20ecrypted%5C%20message%5C%20c%3A%5C%20m%5C%20%3D%5C%20c%5Ed%5C%20mod%5C%20n)
 
 ### Generate strong primes
+#### Generate primes
 - Two important properties:
 	- ***All primes (past 2 and 3) are of the forms 6n+1 and 6n-1*** ([proof](https://primes.utm.edu/notes/faq/six.html)).
 	- If `a` is `n` bits number, `b` is `m` bits number. Than `a*b` will have at most `n + m + 2` bits number. (\[[2](#ref2)\]).
 - With the two properties above, the below algorithm wil generate a prime
 
 <p align="center">
-  <img alt="drawing" width="450" height="250" src="./Images/genprime_alg.jpg" />
+  <img alt="drawing" width="480" height="270" src="./Images/genprime_alg.jpg" />
 </p>
 
+#### Generate strong primes
+- The algorithm is followed the reference \[[3](#ref3)\].
+- Generate a large random prime number `u`, then let `p` be the first prime in the sequence `i*u+1`, for *i=2,4,6,…*.
+
+<p align="center">
+  <img alt="drawing" width="480" height="270" src="./Images/genstrongprime_alg.jpg" />
+</p>
+
+
 ### Find e and d
+
+In step (3), (4). Do: 
+
+- Pick `e` is a prime > 65535.
+- Find d satifies ![](https://latex.codecogs.com/gif.latex?d%20%5Cgeq%20%5Csqrt%5B4%5D%7Bn%7D)
+
+<p align="center">
+  <img alt="drawing" width="550" height="400" src="./Images/genkey_alg.jpg" />
+</p>
+
+- *BinaryBezout algorithm* to find `d` satifies `ed + ϕx = gcd(e,ϕ)`.
+
 ### Fast decryption using CRT
 ## References
 [1] Bùi Doãn Khanh và Nguyễn Đình Thúc. Giáo trình mã hóa thông tin: Lý thuyết và ứng dụng, 2004. <a name="ref1"></a>
 
 [2] Alfred J. Menezes, Scott A. Vanstone, and Paul C. Van Oorschot. Handbook of Applied Cryptography. CRC Press, Inc., USA, 1st edition, 1996. <a name="ref2"></a>
+
+[3] R. L. Rivest, A. Shamir, and L. Adleman. A method for obtaining digital signatures and public-key cryptosystems. Communications of the ACM, 21, 2 1978. <a name="ref3"></a>
